@@ -1,0 +1,2762 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>刑法學術論文整理</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700;900&family=Noto+Sans+TC:wght@300;400;500&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  /* ════════════════════════════════════════════════════
+     MORANDI PALETTE
+  ════════════════════════════════════════════════════ */
+  :root {
+    --ink:        #3d3530;
+    --parchment:  #f0ece6;
+    --gold:       #8a7560;
+    --gold-light: #b0997e;
+    --red:        #9b6f6f;
+    --gray:       #7a7370;
+    --gray-light: #e6e1da;
+    --line:       #ccc5bb;
+    --white:      #f7f4f0;
+    --green:      #5a7268;
+    --green-bg:   #edf2ef;
+    --blue:       #5b6e7c;
+    --blue-bg:    #edf0f3;
+  }
+
+  /* ════════════════════════════════════════════════════
+     RESET
+  ════════════════════════════════════════════════════ */
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Noto Sans TC',sans-serif; background:var(--parchment); color:var(--ink); }
+
+  /* ════════════════════════════════════════════════════
+     HEADER
+  ════════════════════════════════════════════════════ */
+  .site-header {
+    background:var(--ink);
+    padding:14px 24px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-bottom:3px solid var(--gold);
+    gap:12px;
+    flex-wrap:wrap;
+  }
+  .site-title { font-family:'Noto Serif TC',serif; font-size:1rem; font-weight:500; color:var(--parchment); letter-spacing:.12em; }
+  .site-subtitle { font-size:.68rem; color:var(--gold-light); letter-spacing:.22em; margin-top:2px; }
+  .header-badge { font-size:.66rem; color:var(--gold); letter-spacing:.15em; border:1px solid var(--gold); padding:4px 10px; white-space:nowrap; }
+
+  /* ════════════════════════════════════════════════════
+     SEARCH
+  ════════════════════════════════════════════════════ */
+  .search-wrap { position:relative; }
+  .search-box {
+    background:rgba(255,255,255,.08); border:1px solid rgba(184,134,11,.35);
+    color:var(--parchment); font-family:'Noto Sans TC',sans-serif;
+    font-size:.78rem; padding:6px 30px 6px 12px; width:180px;
+    letter-spacing:.06em; outline:none; transition:all .25s;
+  }
+  .search-box::placeholder { color:#6b6356; }
+  .search-box:focus { border-color:var(--gold); background:rgba(255,255,255,.12); width:220px; }
+  .search-icon { position:absolute; right:9px; top:50%; transform:translateY(-50%); color:var(--gold); font-size:.85rem; pointer-events:none; }
+  .search-results-overlay { display:none; position:fixed; inset:0; background:rgba(26,18,8,.7); z-index:999; backdrop-filter:blur(3px); }
+  .search-results-panel {
+    display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+    background:var(--white); width:min(680px,92vw); max-height:75vh; overflow-y:auto;
+    z-index:1000; border-top:4px solid var(--red); box-shadow:0 20px 60px rgba(0,0,0,.35);
+  }
+  .search-results-header { display:flex; align-items:center; justify-content:space-between; padding:16px 22px 12px; border-bottom:1px solid var(--line); }
+  .search-results-title { font-family:'Noto Serif TC',serif; font-size:.92rem; font-weight:700; letter-spacing:.08em; }
+  .search-close-btn { background:none; border:none; font-size:1.4rem; color:var(--gray); cursor:pointer; line-height:1; }
+  .search-close-btn:hover { color:var(--red); }
+  .search-result-item { padding:14px 22px; border-bottom:1px solid var(--gray-light); cursor:pointer; transition:background .15s; display:block; }
+  .search-result-item:hover { background:var(--parchment); }
+  .search-result-author { font-size:.66rem; letter-spacing:.18em; color:var(--red); margin-bottom:3px; }
+  .search-result-title { font-family:'Noto Serif TC',serif; font-size:.92rem; font-weight:700; line-height:1.5; margin-bottom:5px; }
+  .search-result-snippet { font-size:.76rem; color:var(--gray); line-height:1.7; }
+  .search-result-kw { display:inline-block; font-size:.62rem; background:var(--gray-light); color:var(--gray); padding:2px 6px; margin:2px 2px 0; letter-spacing:.06em; }
+  .search-highlight { background:#fff3cd; color:#856404; font-weight:600; }
+  .search-empty { padding:32px; text-align:center; color:var(--gray); font-size:.84rem; letter-spacing:.1em; }
+  .search-count { font-size:.7rem; color:var(--gray); letter-spacing:.12em; }
+
+  /* ════════════════════════════════════════════════════
+     AUTHOR TAB RAIL
+  ════════════════════════════════════════════════════ */
+  .authors-rail {
+    background:var(--ink); padding:0 24px;
+    display:flex; border-bottom:1px solid #2e2820;
+    overflow-x:auto; -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .authors-rail::-webkit-scrollbar { display:none; }
+  .author-tab {
+    font-family:'Noto Serif TC',serif; font-size:.8rem; color:#8a7e6e;
+    padding:11px 18px; letter-spacing:.08em; cursor:pointer;
+    border-bottom:3px solid transparent; transition:all .2s;
+    white-space:nowrap; display:flex; align-items:center; gap:6px; flex-shrink:0;
+  }
+  .author-tab:hover { color:var(--gold-light); }
+  .author-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+  .author-tab .dot { width:5px; height:5px; border-radius:50%; background:var(--gold); opacity:0; transition:opacity .2s; }
+  .author-tab.active .dot { opacity:1; }
+
+  /* ════════════════════════════════════════════════════
+     MAIN LAYOUT  — 上下排列
+  ════════════════════════════════════════════════════ */
+  .main { display:flex; flex-direction:column; }
+
+  /* ── 教授橫條（上方） ── */
+  .prof-bar {
+    background:var(--white);
+    border-bottom:1px solid var(--line);
+    position:relative;
+    padding:16px 24px;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+  .prof-bar::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:3px;
+    background:linear-gradient(90deg,var(--red) 0%,var(--gold) 60%,transparent 100%);
+  }
+
+  /* 頭像 */
+  .prof-portrait {
+    width:64px; height:64px; border-radius:50%; flex-shrink:0;
+    background:var(--ink); border:2px solid var(--gold);
+    overflow:hidden; display:flex; align-items:center; justify-content:center;
+  }
+  .prof-portrait img { width:100%; height:100%; object-fit:cover; object-position:top; }
+  .prof-portrait-initial { font-family:'Noto Serif TC',serif; font-size:1.5rem; color:var(--gold); font-weight:700; }
+
+  /* 姓名 */
+  .prof-identity { flex-shrink:0; min-width:90px; }
+  .prof-name-zh { font-family:'Noto Serif TC',serif; font-size:1.15rem; font-weight:700; letter-spacing:.06em; }
+  .prof-name-en { font-family:'Playfair Display',serif; font-style:italic; font-size:.74rem; color:var(--gray); margin-top:2px; }
+
+  /* 資訊欄 */
+  .prof-meta {
+    display:flex; flex-direction:column; gap:4px;
+    padding-left:20px; border-left:1px solid var(--line);
+    flex:1; min-width:160px;
+  }
+  .prof-info-row { display:flex; gap:8px; align-items:baseline; }
+  .prof-info-label { font-size:.62rem; letter-spacing:.14em; color:var(--gold); font-weight:500; min-width:30px; flex-shrink:0; }
+  .prof-info-value { font-size:.76rem; color:var(--ink); line-height:1.5; }
+
+  /* 關鍵詞 */
+  .prof-tags { min-width:140px; }
+  .prof-tags-label { font-size:.6rem; letter-spacing:.15em; color:var(--gold); margin-bottom:5px; }
+  .tag-list { display:flex; flex-wrap:wrap; gap:4px; }
+  .tag {
+    font-size:.62rem; letter-spacing:.08em; border:1px solid var(--line);
+    color:var(--gray); padding:2px 8px; background:var(--gray-light);
+    transition:all .18s; cursor:pointer;
+  }
+  .tag:hover, .tag.active { border-color:var(--red); color:var(--red); background:#fdf0f0; }
+
+  /* 篇數 */
+  .prof-count { flex-shrink:0; margin-left:auto; background:var(--ink); padding:10px 18px; text-align:center; }
+  .prof-count-num { font-family:'Playfair Display',serif; font-size:2rem; color:var(--gold); line-height:1; }
+  .prof-count-label { font-size:.6rem; color:#8a7e6e; letter-spacing:.18em; margin-top:2px; }
+
+  /* ── 爭點卡列表區（下方） ── */
+  .cards-area { padding:24px 20px 40px; }
+
+  /* ════════════════════════════════════════════════════
+     爭點卡
+  ════════════════════════════════════════════════════ */
+  .section-header { display:flex; align-items:center; margin-bottom:20px; }
+  .section-title {
+    font-family:'Noto Serif TC',serif; font-size:1rem; font-weight:400;
+    letter-spacing:.08em; display:flex; align-items:center; gap:8px;
+    color:var(--gray);
+  }
+  .section-title::before { content:''; display:block; width:3px; height:18px; background:var(--red); }
+
+  .article-card {
+    background:var(--white); border:1px solid var(--line);
+    margin-bottom:12px; cursor:pointer; transition:all .2s;
+    position:relative; overflow:hidden; animation:fadeUp .3s ease both;
+  }
+  .article-card::before {
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--red); transform:scaleY(0); transition:transform .2s; transform-origin:bottom;
+  }
+  .article-card:hover::before, .article-card.expanded::before { transform:scaleY(1); }
+  .article-card:hover { border-color:var(--gold-light); box-shadow:3px 3px 0 var(--line); transform:translate(-1px,-1px); }
+  .article-card.expanded { border-color:var(--red); transform:none; box-shadow:none; }
+
+  .card-header { padding:16px 18px; display:grid; grid-template-columns:1fr auto; gap:12px; align-items:start; }
+  .card-meta { display:flex; align-items:center; gap:8px; margin-bottom:6px; flex-wrap:wrap; }
+  .card-journal { font-size:.65rem; letter-spacing:.12em; color:var(--red); font-weight:500; }
+  .card-year { font-size:.65rem; color:var(--gray); letter-spacing:.08em; }
+  .card-dot { color:var(--line); }
+  .card-title-zh { font-family:'Noto Serif TC',serif; font-size:1rem; font-weight:700; line-height:1.65; letter-spacing:.04em; margin-bottom:4px; }
+  .card-title-en { font-family:'Playfair Display',serif; font-style:italic; font-size:.72rem; color:var(--gray); }
+  .card-keywords { display:flex; flex-wrap:wrap; gap:4px; margin-top:8px; }
+  .keyword { font-size:.62rem; letter-spacing:.08em; color:var(--gray); border:1px solid var(--line); padding:1px 7px; }
+  .card-toggle {
+    width:26px; height:26px; border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gray); font-size:1rem; flex-shrink:0; margin-top:2px; transition:all .2s;
+  }
+  .article-card.expanded .card-toggle { background:var(--red); border-color:var(--red); color:white; transform:rotate(45deg); }
+
+  /* ── 卡片主體 ── */
+  .card-body { max-height:0; overflow:hidden; transition:max-height .45s ease; }
+  .card-body.open { max-height:9999px; }
+
+  .body-tabs { display:flex; border-bottom:1px solid var(--line); background:var(--white); overflow-x:auto; scrollbar-width:none; }
+  .body-tabs::-webkit-scrollbar { display:none; }
+  .body-tab {
+    font-size:.7rem; letter-spacing:.12em; padding:10px 16px; cursor:pointer;
+    color:var(--gray); border-bottom:2px solid transparent; transition:all .18s;
+    white-space:nowrap; flex-shrink:0;
+  }
+  .body-tab:hover { color:var(--ink); }
+  .body-tab.active { color:var(--red); border-bottom-color:var(--red); font-weight:500; }
+
+  .tab-panel { display:none; padding:22px 18px; }
+  .tab-panel.active { display:block; }
+
+  /* ── 摘要 ── */
+  .abstract-text { font-size:.86rem; line-height:2.1; color:#3a3228; letter-spacing:.02em; }
+  .abstract-text strong { color:var(--ink); }
+  .abstract-text em { color:var(--red); font-style:normal; font-weight:500; }
+
+  /* ── 爭點區塊 ── */
+  .issue-block { border:1px solid var(--line); margin-bottom:20px; background:var(--white); overflow:hidden; }
+  .issue-header { background:var(--ink); padding:10px 16px; display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .issue-num { font-family:'Playfair Display',serif; font-size:.68rem; color:#f0ece6; border:1px solid var(--gold); padding:2px 8px; letter-spacing:.08em; flex-shrink:0; }
+  .issue-title { font-family:'Noto Serif TC',serif; font-size:.88rem; color:var(--parchment); font-weight:500; letter-spacing:.03em; line-height:1.55; }
+
+  /* 學說行 — 手機預設堆疊，桌機雙欄 */
+  .doctrine-item { border-bottom:1px solid var(--gray-light); padding:16px 16px; }
+  .doctrine-item:last-child { border-bottom:none; }
+  .doctrine-label { display:flex; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+  .doctrine-badge {
+    display:inline-flex; align-items:center; font-size:.66rem;
+    letter-spacing:.08em; padding:3px 9px; font-weight:500; flex-shrink:0;
+  }
+  .badge-main { background:var(--blue-bg);  color:var(--blue);  border-left:3px solid var(--blue); }
+  .badge-alt  { background:var(--gray-light); color:#4a4035;    border-left:3px solid #9b8f7e; }
+  .badge-crit { background:#fff5f5;           color:var(--red);  border-left:3px solid var(--red); }
+  .doctrine-who { font-size:.67rem; color:var(--gray); letter-spacing:.04em; line-height:1.5; }
+  .doctrine-content { font-size:.84rem; line-height:2.05; color:#3a3228; }
+  .doctrine-content strong { color:var(--ink); }
+  .doctrine-content em { color:var(--red); font-style:normal; font-weight:500; }
+  .doctrine-sub { margin-top:10px; padding:10px 14px; border-left:3px solid var(--line); font-size:.77rem; color:var(--gray); line-height:1.95; background:#f5f2ed; }
+  .doctrine-sub em { color:var(--red); font-style:normal; }
+
+  /* 作者結論框 */
+  .author-conclusion { background:var(--green-bg); border:1px solid #a8c4b0; border-left:4px solid var(--green); padding:14px 16px; margin:4px 16px 16px; }
+  .conclusion-label { font-size:.65rem; letter-spacing:.18em; color:var(--green); font-weight:500; margin-bottom:7px; }
+  .conclusion-text { font-size:.83rem; line-height:2.05; color:#1a3a25; }
+  .conclusion-text strong { color:var(--green); }
+  .conclusion-text em { color:#c0392b; font-style:normal; font-weight:500; }
+
+  /* 目次 */
+  .toc-l1 { display:flex; gap:10px; padding:9px 0; border-bottom:1px dotted var(--line); align-items:flex-start; }
+  .toc-l1:last-child { border-bottom:none; }
+  .toc-l1-num { font-family:'Playfair Display',serif; font-size:.78rem; color:var(--red); font-weight:700; min-width:18px; flex-shrink:0; padding-top:2px; }
+  .toc-l1-text { font-family:'Noto Serif TC',serif; font-size:.85rem; font-weight:500; line-height:1.65; }
+  .toc-l2 { padding:3px 0 3px 0; display:flex; gap:7px; font-size:.78rem; color:var(--gray); line-height:1.65; }
+  .toc-l2-num { min-width:20px; flex-shrink:0; }
+  .toc-l3 { padding:2px 0 2px 20px; font-size:.74rem; color:#9b8f7e; line-height:1.75; display:block; }
+  .toc-l4 { padding:2px 0 2px 14px; font-size:.7rem; color:#b0a090; line-height:1.75; display:block; }
+
+  /* 卡片底欄 */
+  .card-footer { padding:11px 16px; background:var(--ink); display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px; }
+  .doi-text { font-size:.63rem; color:#8a7e6e; letter-spacing:.08em; }
+  .doi-val { color:var(--gold-light); }
+  .read-btn {
+    font-size:.65rem; letter-spacing:.14em; color:var(--gold); border:1px solid var(--gold);
+    padding:5px 12px; cursor:pointer; background:transparent; transition:all .18s;
+    text-decoration:none; display:inline-block; flex-shrink:0;
+  }
+  .read-btn:hover { background:var(--gold); color:var(--ink); }
+
+  .ornament { text-align:center; color:var(--line); font-size:1rem; letter-spacing:.4em; margin:24px 0 6px; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ════════════════════════════════════════════════════
+     DESKTOP ≥ 768px — 稍微加大
+  ════════════════════════════════════════════════════ */
+  @media (min-width: 768px) {
+    .site-header { padding:16px 40px; }
+    .prof-bar { padding:20px 40px; gap:24px; }
+    .prof-portrait { width:76px; height:76px; }
+    .prof-name-zh { font-size:1.25rem; }
+    .prof-meta { padding-left:24px; }
+    .cards-area { padding:28px 40px 48px; }
+    .card-header { padding:20px 22px; }
+    .card-title-zh { font-size:1.05rem; }
+    .tab-panel { padding:28px 24px; }
+    /* 桌機：學說行雙欄 */
+    .doctrine-item { display:grid; grid-template-columns:180px 1fr; gap:18px; align-items:start; padding:20px 22px; }
+    .doctrine-label { margin-bottom:0; flex-direction:column; align-items:flex-start; }
+    .author-conclusion { padding:16px 20px; margin:4px 20px 20px; }
+    .issue-block { margin-bottom:26px; }
+  }
+
+  @media (min-width: 1200px) {
+    .prof-bar { padding:20px 60px; }
+    .cards-area { padding:32px 60px 56px; max-width:1100px; }
+    .card-title-zh { font-size:1.08rem; }
+  }
+
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div>
+    <div class="site-title">刑法學術論文整理庫</div>
+    <div class="site-subtitle">CRIMINAL LAW ACADEMIC ARCHIVE</div>
+  </div>
+  <div class="search-wrap">
+    <input class="search-box" id="globalSearch" type="text" placeholder="搜尋論文、關鍵詞、爭點…" oninput="doSearch(this.value)" onfocus="if(this.value.length>0)showResults()" autocomplete="off">
+    <span class="search-icon">🔍</span>
+  </div>
+</header>
+<div class="search-results-overlay" id="searchOverlay" onclick="closeSearch()"></div>
+<div class="search-results-panel" id="searchPanel">
+  <div class="search-results-header">
+    <span class="search-results-title">搜尋結果</span>
+    <button class="search-close-btn" onclick="closeSearch()">✕</button>
+  </div>
+  <div id="searchResultsList"></div>
+</div>
+
+<nav class="authors-rail">
+  <div class="author-tab active" onclick="switchAuthor('chou',this)"><span class="dot"></span>周漾沂</div>
+  <div class="author-tab" onclick="switchAuthor('tsai',this)"><span class="dot"></span>蔡聖偉</div>
+  <div class="author-tab" onclick="switchAuthor('xue',this)"><span class="dot"></span>薛智仁</div>
+  <div class="author-tab" onclick="switchAuthor('hsu',this)"><span class="dot"></span>許恒達</div>
+  <div class="author-tab" onclick="switchAuthor('hsu2',this)"><span class="dot"></span>徐育安</div>
+  <div class="author-tab" onclick="switchAuthor('wang',this)"><span class="dot"></span>王皇玉</div>
+  <div class="author-tab" style="opacity:.4;cursor:default">＋ 待新增</div>
+</nav>
+
+<!-- AUTHOR: chou -->
+<div class="main author-panel" id="panel-chou">
+  <div class="prof-bar">
+    <div class="prof-portrait">
+      <img src="https://www.law.ntu.edu.tw/media/k2/items/cache/f7b9be29873ad525695063e6e748eae3_M.jpg" alt="周漾沂教授"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <span class="prof-portrait-initial" style="display:none">周</span>
+    </div>
+    <div class="prof-identity">
+      <div class="prof-name-zh">周漾沂</div>
+      <div class="prof-name-en">Yang-Yi Chou</div>
+    </div>
+    <div class="prof-meta">
+      <div class="prof-info-row"><span class="prof-info-label">職稱</span><span class="prof-info-value">教授</span></div>
+      <div class="prof-info-row"><span class="prof-info-label">單位</span><span class="prof-info-value">臺灣大學法律學院</span></div>
+      <div class="prof-info-row"><span class="prof-info-label">領域</span><span class="prof-info-value">刑法總則、未遂犯理論、法哲學</span></div>
+    </div>
+    <div class="prof-tags">
+      <div class="prof-tags-label">關鍵詞篩選</div>
+      <div class="tag-list"><span class="tag active" onclick="filterTag(this,'all')">全部</span>
+        <span class="tag" onclick="filterTag(this,'未遂')">未遂</span>
+        <span class="tag" onclick="filterTag(this,'中止')">中止</span>
+        <span class="tag" onclick="filterTag(this,'著手')">著手實行</span>
+        <span class="tag" onclick="filterTag(this,'風險')">風險輸出</span></div>
+    </div>
+    <div class="prof-count">
+      <div class="prof-count-num">2</div>
+      <div class="prof-count-label">篇　論　文</div>
+    </div>
+  </div>
+
+  <div class="cards-area">    <div class="section-header">
+      <div class="section-title">論文列表</div>
+      
+    </div>
+
+    <!-- ══ CARD 1 ══ -->
+    <div class="article-card" id="card-1" data-tags="未遂 中止 著手 風險" onclick="toggleCard('card-1',event)">
+      <div class="card-header">
+        <div>
+          <div class="card-meta">
+            <span class="card-journal">月旦法學雜誌</span>
+            <span class="card-dot">·</span>
+            <span class="card-year">No.345 ／ 2024.2</span>
+          </div>
+          <div class="card-title-zh">論未了未遂中止之成立可能性</div>
+          <div class="card-title-en">The Possibility of Abandonment of Unfinished Attempt</div>
+          <div class="card-keywords">
+            <span class="keyword">未遂</span><span class="keyword">著手實行</span><span class="keyword">中止未遂</span>
+            <span class="keyword">未了未遂</span><span class="keyword">既了未遂</span><span class="keyword">風險輸出</span>
+          </div>
+        </div>
+        <div class="card-toggle">＋</div>
+      </div>
+
+      <div class="card-body" onclick="event.stopPropagation()" id="body-card-1">
+        <!-- TABS -->
+        <div class="body-tabs">
+          <div class="body-tab active"  onclick="switchTab('card-1','abstract')">摘要</div>
+          <div class="body-tab"         onclick="switchTab('card-1','issues')">爭點整理</div>
+          <div class="body-tab"         onclick="switchTab('card-1','toc')">目次</div>
+        </div>
+
+        <!-- 摘要 -->
+        <div class="tab-panel active" id="card-1-abstract" onclick="event.stopPropagation()">
+          <div class="abstract-text">
+            本文討論<strong>未了未遂中止之成立可能性</strong>問題，指出既有的犯行計畫理論、整體觀察理論、個別行動理論等，皆不足以建構一個支持未了未遂中止之成立可能性的<em>未遂事件單一性</em>概念。<br><br>
+            本文進而主張，在<em>風險輸出</em>作為著手實行之實質內涵的前提下，行為人放棄續行的意義，不是停止朝向著手實行前進，就是不另開啟一個新的犯行，無涉於當下犯行的中止。<br><br>
+            據此觀點，<strong>未了未遂之中止在規範邏輯上並無存在的餘地</strong>，此結論雖與現行刑法第27條文字有所牴觸，但可作為未來修法之參考。
+          </div>
+        </div>
+
+        <!-- 爭點整理 -->
+        <div class="tab-panel" id="card-1-issues" onclick="event.stopPropagation()">
+
+          <!-- 爭點一 -->
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點一</span>
+              <span class="issue-title">如何界定「未遂事件單一性」？</span>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">犯行計畫說</span>
+                <div class="doctrine-who">德國早期實務<br>BGHSt 14, 75</div>
+              </div>
+              <div class="doctrine-content">
+                以行為人<strong>主觀犯罪計畫</strong>為唯一標準。行為人事前計畫的範圍決定一個未遂事件的邊界；計畫內的後續行動均屬同一未遂事件，放棄即可成立未了未遂中止。
+                <div class="doctrine-sub">
+                  ✗ <em>批評</em>：可罰性完全繫諸主觀恣意；計畫可無限延伸（如終身追殺）；多次製造風險的行為人反而有更多中止機會，造成評價倒錯。
+                </div>
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">整體觀察說</span>
+                <div class="doctrine-who">主流見解<br>Roxin、Kühl<br>BGHSt 31, 170</div>
+              </div>
+              <div class="doctrine-content">
+                不受犯罪計畫拘束，以<strong>行為人放棄實行時的主觀視角</strong>為準（Rücktrittshorizont），搭配「<em>生活歷程一體性</em>」（時空緊密關聯性）判斷。行為方式不同或另行起意均不妨礙單一性。
+                <div class="doctrine-sub">
+                  子說① <em>自然行為單數／生活歷程一體性</em>（BGHSt 34, 53；Jescheck）——以時空緊密性合併行動，但「緊密」與否高度模糊，欠缺明確刑法規範基礎。<br>
+                  子說② <em>行為種類相同性說</em>（Ranft）——限同種類行為方式，被批評為倒果為因、缺乏實質規範理由。<br>
+                  子說③ <em>犯罪決意說</em>（黃榮堅）——以「能否期待另行起意」判斷，實質與犯行計畫說無異，最終仍回歸時空緊密性標準。<br>
+                  ✗ <em>批評</em>：誘因論基礎未必成立；將本應「不罰」的事轉化為「應獎勵」的事，扭曲刑法正常運作。
+                </div>
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">個別行動說</span>
+                <div class="doctrine-who">Frister、Freund<br>Jakobs、Bergmann</div>
+              </div>
+              <div class="doctrine-content">
+                每一個行為人<strong>主觀上認為適於導致結果發生的個別行動</strong>，即為獨立的未遂犯行。一旦完成，屬失敗未遂或既了未遂，不得再透過放棄後續行動成立中止。
+                <div class="doctrine-sub">
+                  ✗ <em>批評</em>：等同取消未了未遂中止型態；且與著手實行概念在隔離犯案例中出現脫鉤。<br>
+                  ✓ <em>本文認同之處</em>：正確把握「犯行單位須透過實質不法意涵界定」的方向。
+                </div>
+              </div>
+            </div>
+
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（周漾沂）</div>
+              <div class="conclusion-text">
+                三說均未提供充分的<strong>規範性標準</strong>。問題根源在於：未遂事件單一性是犯行概念的問題，犯行不能由行為人主觀恣意界定，必須從刑法保護法益的規範目標推導。本文以<em>風險輸出</em>取代上述標準——<strong>一次風險輸出即等於一個未遂犯行單位</strong>，此乃侵害原則的規範性結論。
+              </div>
+            </div>
+          </div>
+
+          <!-- 爭點二 -->
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點二</span>
+              <span class="issue-title">未遂事件單一性的判斷：主觀標準還是規範標準？</span>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">主觀標準</span>
+                <div class="doctrine-who">整體觀察說<br>個別行動說均採</div>
+              </div>
+              <div class="doctrine-content">
+                以行為人的主觀認知（是否認為仍可既遂、是否認為個別行動適於造成結果）作為判斷基礎。
+                <div class="doctrine-sub">
+                  理由：行為人認知決定其行動可能性，進而決定規範可期待其如何行動。<br>
+                  ✗ <em>批評</em>：犯行不能由行為人恣意界定；純主觀標準可能使中止的成立要求與中止的客觀效果（結果不發生）之間發生解離。
+                </div>
+              </div>
+            </div>
+
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（周漾沂）</div>
+              <div class="conclusion-text">
+                應採<strong>規範性標準</strong>：以行為人於行為時「<em>主觀認知的事實</em>」（而非其主觀恣意詮釋）為基礎，從規範角度判斷<em>侵害進程是否達到最後可逆轉時點</em>。此既反映行為人對犯罪事件的可支配性，又確保犯行概念具規範安定性，不取決於偶然。
+              </div>
+            </div>
+          </div>
+
+          <!-- 爭點三 -->
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點三</span>
+              <span class="issue-title">風險輸出理論下，未了未遂中止有無成立餘地？</span>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">風險即時輸出</span>
+                <div class="doctrine-who">例：朝人開槍</div>
+              </div>
+              <div class="doctrine-content">
+                行為人完成個別行動後風險馬上輸出，<strong>當下即構成一獨立未遂犯行單位</strong>，無從與後續行動合併觀察。
+                <div class="doctrine-sub">
+                  → 風險輸出<em>前</em>放棄：讓自己不構成著手實行，不成立未遂罪，非中止。<br>
+                  → 風險輸出<em>後</em>放棄後續行動：不開啟新犯行，不成立新罪，<em>亦非</em>未了未遂中止。<br>
+                  ✦ 基礎案例一（甲開三槍後放棄）：三槍各自構成獨立的殺人失敗未遂，放棄第四槍僅是不成立第四個殺人罪，非中止。<br>
+                  ✦ 基礎案例二（甲開槍後放棄勒殺）：開槍後風險已輸出，放棄勒殺僅是不開啟新犯行，非中止。
+                </div>
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">風險延遲輸出</span>
+                <div class="doctrine-who">例：安裝炸彈</div>
+              </div>
+              <div class="doctrine-content">
+                行為人藉個別行動置放<strong>初始條件</strong>，須待後續條件具備才達風險輸出時點。
+                <div class="doctrine-sub">
+                  → 安裝到一半停止：尚未達著手實行，放棄僅是不設置初始條件 → <em>預備犯</em>問題，非中止犯。<br>
+                  → 安裝完畢後1小時撤除：侵害進程未達最後可逆轉時點，撤除效果是不成立未遂罪，非中止。<br>
+                  → 風險輸出後積極阻止（例：趕往拆彈）：屬<em>既了未遂</em>中止，非未了未遂。
+                </div>
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-crit">純粹主觀說</span>
+                <div class="doctrine-who">RGSt 72, 66<br>BGHSt 6, 302</div>
+              </div>
+              <div class="doctrine-content">
+                行為人在<strong>犯罪決意當下的舉動</strong>即為著手實行，可為未了未遂中止保留最大空間。
+                <div class="doctrine-sub">
+                  ✗ 可罰性大幅前置到預備行為階段；錯置未遂犯不法重點於法敵對心念，而非犯行對法益的實質侵害作用。
+                </div>
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-crit">形式客觀說</span>
+                <div class="doctrine-who">v. Hippel；搭配<br>主客觀混合說</div>
+              </div>
+              <div class="doctrine-content">
+                行為人開始做出一部分<strong>典型的構成要件行為</strong>即為著手實行，置放初始條件中途放棄亦可成立未了未遂中止。
+                <div class="doctrine-sub">
+                  ✗ 非定式犯罪中「典型構成要件行為」標準不清；禁止「看起來能殺死人」的行為而非「真的能殺死人」的行為，保護法益的目標因此錯置。
+                </div>
+              </div>
+            </div>
+
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者結論（周漾沂）</div>
+              <div class="conclusion-text">
+                無論風險即時或延遲輸出，<strong>均無成立未了未遂中止的邏輯空間</strong>。唯有採純粹主觀說或形式客觀說方可保留此空間，但二說均有根本缺陷（可罰性過度前置化）。結論：在風險輸出框架下，<strong>未了未遂的中止型態在規範邏輯上並無存在可能</strong>，現行刑法第27條應予修正參考。
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /issues -->
+
+        <!-- 目次 -->
+        <div class="tab-panel" id="card-1-toc" onclick="event.stopPropagation()">
+          <div style="max-width:100%;">
+
+            <div class="toc-l1">
+              <span class="toc-l1-num">壹</span>
+              <span class="toc-l1-text">問題意識</span>
+            </div>
+
+            <div class="toc-l1">
+              <span class="toc-l1-num">貳</span>
+              <div style="flex:1; min-width:0;">
+                <div class="toc-l1-text">檢視既有區分理論</div>
+                <div class="toc-l2"><span class="toc-l2-num">一、</span><span>未遂事件單一性概念及其實益</span></div>
+                <div class="toc-l2">
+                  <span class="toc-l2-num">二、</span>
+                  <div style="flex:1; min-width:0;">
+                    <div>對各種單一性理論的檢討</div>
+                    <span class="toc-l3">（一）犯行計畫理論</span>
+                    <span class="toc-l3">（二）整體觀察理論</span>
+                    <span class="toc-l4">1. 理論內涵</span>
+                    <span class="toc-l4">2. 檢視單一性標準（自然行為單數 / 行為種類相同性 / 犯罪決意）</span>
+                    <span class="toc-l4">3. 強化被害人保護作為理論基礎？</span>
+                    <span class="toc-l3">（三）個別行動理論</span>
+                    <span class="toc-l4">1. 內容與實益</span>
+                    <span class="toc-l4">2. 理論價值評估</span>
+                  </div>
+                </div>
+                <div class="toc-l2"><span class="toc-l2-num">三、</span><span>對主觀標準的質疑</span></div>
+              </div>
+            </div>
+
+            <div class="toc-l1">
+              <span class="toc-l1-num">參</span>
+              <div style="flex:1; min-width:0;">
+                <div class="toc-l1-text">風險輸出理論下的詮釋</div>
+                <div class="toc-l2">
+                  <span class="toc-l2-num">一、</span>
+                  <div style="flex:1; min-width:0;">
+                    <div>風險輸出作為未遂犯行</div>
+                    <span class="toc-l3">（一）風險輸出的定義</span>
+                    <span class="toc-l3">（二）以侵害原則為理論基礎</span>
+                    <span class="toc-l3">（三）風險輸出的型態（即時輸出 / 延遲輸出）</span>
+                    <span class="toc-l3">（四）規範性標準的建立</span>
+                    <span class="toc-l3">（五）未遂犯行的特徵</span>
+                  </div>
+                </div>
+                <div class="toc-l2">
+                  <span class="toc-l2-num">二、</span>
+                  <div style="flex:1; min-width:0;">
+                    <div>未了未遂中止型態的成立可能性</div>
+                    <span class="toc-l3">（一）風險即時輸出的情形</span>
+                    <span class="toc-l3">（二）風險延遲輸出的情形</span>
+                    <span class="toc-l3">（三）不同理論下的成立可能性（純粹主觀說 / 形式客觀說）</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="toc-l1">
+              <span class="toc-l1-num">肆</span>
+              <span class="toc-l1-text">結論</span>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="card-footer" onclick="event.stopPropagation()">
+          <div class="doi-text">DOI：<span class="doi-val">10.53106/1025593134504</span></div>
+          <div class="doi-text" style="margin-left:18px">計畫：<span class="doi-val">NSTC 109-2423-H-002-001-MY3</span></div>
+          <a class="read-btn" href="https://drive.google.com/drive/search?q=%E8%AB%96%E6%9C%AA%E4%BA%86%E6%9C%AA%E9%81%82%E4%B8%AD%E6%AD%A2" target="_blank" onclick="event.stopPropagation()">📄 查看原文</a>
+        </div>
+      </div>
+    </div><!-- /card-1 -->
+
+
+    <!-- CHOU CARD 2 -->
+    <div class="article-card" id="card-2" data-tags="未遂 著手實行 風險輸出 侵害原則" onclick="toggleCard('card-2',event)" style="animation-delay:.10s">
+      <div class="card-header">
+        <div>
+          <div class="card-meta">
+            <span class="card-journal">臺大法學論叢</span>
+            <span class="card-dot">·</span>
+            <span class="card-year">第47卷第1期 ／ 2018.3</span>
+          </div>
+          <div class="card-title-zh">未遂犯可罰性基礎及著手實行概念：風險輸出理論的建構與應用</div>
+          <div class="card-title-en">Punishability of Attempt and Commencement of Execution: Construction and Application of the Risk Exportation Theory</div>
+          <div class="card-keywords">
+            <span class="keyword">未遂犯</span><span class="keyword">著手實行</span>
+            <span class="keyword">侵害原則</span><span class="keyword">法主體性</span>
+            <span class="keyword">規範風險輸出</span><span class="keyword">主觀風險輸出</span>
+            <span class="keyword">印象理論</span><span class="keyword">規範破壞顯現理論</span>
+          </div>
+        </div>
+        <div class="card-toggle">＋</div>
+      </div>
+
+      <div class="card-body" id="body-card-2">
+        <div class="body-tabs" onclick="event.stopPropagation()">
+          <div class="body-tab active" onclick="switchTab('card-2','abstract')">摘要</div>
+          <div class="body-tab" onclick="switchTab('card-2','issues')">爭點整理</div>
+          <div class="body-tab" onclick="switchTab('card-2','toc')">目次</div>
+        </div>
+
+        <!-- 摘要 -->
+        <div class="tab-panel active" id="card-2-abstract" onclick="event.stopPropagation()">
+          <div class="abstract-text">
+            本文以<strong>法主體論述</strong>重新詮釋古典自由主義下的侵害原則，藉此建構未遂犯可罰性基礎及界定著手實行概念。<br><br>
+            <strong>核心主張</strong>：未遂犯可罰性基礎在於法主體<em>非理性地否認他人尊嚴而侵害他人權利</em>，著手實行概念則為此一基礎之具體化，即個人從其法權領域「輸出風險」至他人法權領域中。<br><br>
+            對故意未遂犯之著手實行的成立而言，<strong>規範風險輸出</strong>和<strong>主觀風險輸出</strong>皆為必要條件——前者落在依規範觀點（以行為人主觀認知的事實為基礎）而定出的侵害進程最後可逆轉時點；後者落在依行為人觀點而定出的侵害進程最後可逆轉時點。在規範化的詮釋下，兩者合致時固然成立，兩者並不合致、但歸屬於同一風險關係時亦能成立。<br><br>
+            藉由風險輸出理論，可解消以往主觀未遂理論、客觀未遂理論、規範未遂理論三者的獨斷與對立。
+          </div>
+        </div>
+
+        <!-- 爭點整理 -->
+        <div class="tab-panel" id="card-2-issues" onclick="event.stopPropagation()">
+
+          <!-- 爭點一 -->
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點一</span>
+              <span class="issue-title">未遂犯的可罰性基礎為何？——三大流行學說的核心論據與缺陷</span>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">主觀未遂理論</span>
+                <div class="doctrine-who">行為人危險性說<br>行為規範論<br>（Jakobs 等）</div>
+              </div>
+              <div class="doctrine-content">
+                未遂犯不法內涵全然落在<strong>犯罪意志</strong>本身——透過「行為人危險性」（T&auml;tergef&auml;hrlichkeit）或「規範破壞的顯現」（Expressiv-Werden）說明處罰理由；即使絕對無危險的不能犯亦可罰，因為行為人的「抽象法益侵害傾向」即是刑事不法所在。
+                <div class="doctrine-sub">
+                  ✗ <em>批評</em>：①欠缺區分預備與著手的理論實益——只要行為人「認真地」決意犯罪，任何顯現於外的行為皆成立著手；②不法過度主觀化，牴觸犯行原則（Tatprinzip）——刑法處罰的是犯行本身，非行為人的未來再犯危險或法敵對心念；③刑法理論系統的工具化——以目的理性思想驅動刑法，使刑法淪為社會控制工具。
+                </div>
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">規範效力理論</span>
+                <div class="doctrine-who">印象理論（通說）<br>規範破壞顯現理論<br>（Jakobs）</div>
+              </div>
+              <div class="doctrine-content">
+                <strong>印象理論</strong>：著手實行引發廣泛社會心理作用，動搖對刑法規範效力的信賴，為未遂犯處罰基礎。<br>
+                <strong>規範破壞顯現理論</strong>：未遂犯處罰基礎在於規範破壞的「顯現」，行為必須進入社會語意脈絡而產生犯罪意義。
+                <div class="doctrine-sub">
+                  ✗ <em>批評印象理論</em>：①同樣無力區分預備與著手；②不法內涵裂解——既遂犯與未遂犯採兩套不同處罰基礎，形成雙軌制，使未遂犯與法益保護脫鈎，所禁止的僅是「看起來」具有法益侵害性的行為；③一般預防理論為刑罰層次考量，不應回過頭建構刑事不法。<br>
+                  ✗ <em>批評規範破壞顯現理論</em>：秘密為之的著手實行因無人知曉即不成立未遂，並與其「內在領域」理論相互矛盾。
+                </div>
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">客觀未遂理論</span>
+                <div class="doctrine-who">我國通說<br>（2005年修法立場）</div>
+              </div>
+              <div class="doctrine-content">
+                採取<strong>客觀（具體）危險</strong>作為處罰基礎，才能體現刑法謙抑性原則及法益保護功能；以事後觀點下的客觀危險狀態作為行為不法判斷基礎。
+                <div class="doctrine-sub">
+                  ✗ <em>批評</em>：①客觀危險概念缺乏可操作性與刑法規範性；②以事後觀點下的偶然事實為基礎，欠缺與法益保護的功能性連結；③謙抑性論證失效——若貫徹謙抑思想，客觀未遂理論仍不夠謙抑，可繼續推演至要求必須有損害結果才可成罪；④「心念刑法」批評的謬誤——主客觀一體的犯行概念下，以犯行主觀面所顯現的刑法敵對性作為制裁基礎屬當然之理，並非「處罰心念」。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 爭點二 -->
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點二</span>
+              <span class="issue-title">如何正確建構未遂犯可罰性基礎？——侵害原則與法主體性論述</span>
+            </div>
+
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（周漾沂）</div>
+              <div class="conclusion-text">
+                以<strong>自由法理念下的侵害原則</strong>（harm principle）為基礎，透過<strong>法主體性論述</strong>證立之——<br><br>
+                <strong>實質不法</strong>：法主體非理性地否認他人尊嚴而侵害他人權利。<br><br>
+                <strong>侵害的精確定義</strong>（五層次）：<br>
+                ①侵害是<em>人際侵害</em>（interpersonale Verletzung），涉及行為人與被害人間的關係<br>
+                ②侵害是指<em>權利侵害</em>（Rechtsverletzung），破壞規範性歸屬關係，而非僅物理性破壞<br>
+                ③個人要改變他人權利客體狀態，是透過創造改變的<em>可能性</em>而為之<br>
+                ④實質構成要件行為的定義＝<em>創造非容許風險</em><br>
+                ⑤還必須「輸出」風險——行為人對風險失去支配，使侵害進程進展到<em>最後可逆轉時點</em><br><br>
+                <strong>可罰性起點</strong>＝侵害原則之具體化＝個人從自己的法權領域<strong>輸出風險</strong>到他人的法權領域中。
+              </div>
+            </div>
+          </div>
+
+          <!-- 爭點三 -->
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點三</span>
+              <span class="issue-title">規範風險輸出的判斷標準——以何種事實為基礎？</span>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-crit">排除①</span>
+                <div class="doctrine-who">所有客觀事實<br>（事後觀點）</div>
+              </div>
+              <div class="doctrine-content">
+                包含行為時無從掌控的偶然事後事實 → 義務違反不應受偶然影響 → <strong>排除</strong>。
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-crit">排除②</span>
+                <div class="doctrine-who">一般人所能<br>認知的事實</div>
+              </div>
+              <div class="doctrine-content">
+                在人的不法理論下，刑法義務違反的判斷永遠是針對個案中具體的行為人，非虛擬第三人 → <strong>排除</strong>。
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">採納</span>
+                <div class="doctrine-who">行為人主觀<br>認知的事實<br>（規範角度）</div>
+              </div>
+              <div class="doctrine-content">
+                以行為人於行為時主觀認知的事實為基礎，從<strong>規範角度</strong>判斷侵害進程是否達到最後可逆轉時點。<br>
+                → 既反映行為人對犯罪事件的可支配性，又確保不取決於行為人的主觀恣意詮釋。<br>
+                <div class="doctrine-sub">
+                  特別說明：隔離犯案例中，行為人完成下毒後取得的<em>後續認知</em>（如得知被害人提早或延後返家）亦可前移或後移風險輸出時點，只要該後續認知發生在行為人原有認知所支撐的風險輸出時點之前。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 爭點四 -->
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點四</span>
+              <span class="issue-title">主觀風險輸出與規範風險輸出的相互關係——如何共同構成故意未遂犯著手實行？</span>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">情形一：兩者合致</span>
+                <div class="doctrine-who">最常見<br>風險即時輸出</div>
+              </div>
+              <div class="doctrine-content">
+                行為人扣下板機時，主觀上決心殺人（主觀輸出）＋規範角度亦認定此刻為最後可逆轉時點（規範輸出）→ 兩者同時，<strong>著手實行成立</strong>。
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">情形二：主觀先於規範</span>
+                <div class="doctrine-who">隔離犯典型<br>（下毒案）</div>
+              </div>
+              <div class="doctrine-content">
+                甲下毒時已「決心」殺乙（主觀輸出），但規範風險輸出時點在五點後。<br>
+                → 透過「<strong>同一風險關係</strong>」的規範化詮釋解決：置放初始條件的主觀決心與規範輸出時點，皆屬針對同一權利客體侵害的同一風險關係，<strong>著手實行成立</strong>。<br>
+                → 同時性原則（Koinzidenzprinzip）須重新檢討：不應以自然觀點切割行為，而應以規範性的「同一風險關係」判斷。
+                <div class="doctrine-sub">
+                  延伸：即使決心產生在置放初始條件「之後」（如下毒後下午三點才決心），只要決心產生於規範風險輸出時點之前，仍屬同一風險關係內，具備行為決意的適格。
+                </div>
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-crit">情形三：規範先於主觀</span>
+                <div class="doctrine-who">欠缺行為決意</div>
+              </div>
+              <div class="doctrine-content">
+                風險已依規範觀點輸出，但行為人直到事後才產生決心 → 此決心係恣意生成，逸脫同一風險關係，<strong>無行為決意適格</strong> → 頂多成立不可罰的過失未遂犯。
+                <div class="doctrine-sub">
+                  特殊情形（風險提前輸出）：實際風險輸出早於規範輸出時點，但主觀決心仍在規範時點之前 → 若實際輸出時點落在規範時點所構成的「合理區間」內，仍可成立；若超出合理區間，則欠缺著手實行。
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div><!-- /issues -->
+
+        <!-- 目次 -->
+        <div class="tab-panel" id="card-2-toc" onclick="event.stopPropagation()">
+          <div style="max-width:100%">
+            <div class="toc-l1"><span class="toc-l1-num">壹</span><span class="toc-l1-text">問題提出（三個意義層次：釋義學、基礎理論、立法批判）</span></div>
+            <div class="toc-l1">
+              <span class="toc-l1-num">貳</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">流行學說之核心論據評析</div>
+                <div class="toc-l2">
+                  <span class="toc-l2-num">一、</span>
+                  <div style="flex:1;min-width:0">
+                    <div>目的理性思想下未遂犯不法的主觀化</div>
+                    <span class="toc-l3">（一）主觀危險理論（行為人危險性說）</span>
+                    <span class="toc-l3">（二）行為規範論（Jakobs）</span>
+                    <span class="toc-l3">（三）檢視主觀未遂理論（三缺陷）</span>
+                  </div>
+                </div>
+                <div class="toc-l2">
+                  <span class="toc-l2-num">二、</span>
+                  <div style="flex:1;min-width:0">
+                    <div>規範效力信賴減損作為未遂犯不法核心</div>
+                    <span class="toc-l3">（一）印象理論</span>
+                    <span class="toc-l3">（二）規範破壞顯現理論</span>
+                    <span class="toc-l3">（三）檢討規範未遂理論</span>
+                  </div>
+                </div>
+                <div class="toc-l2">
+                  <span class="toc-l2-num">三、</span>
+                  <div style="flex:1;min-width:0">
+                    <div>刑法謙抑性要求下未遂犯不法的客觀化</div>
+                    <span class="toc-l3">（一）客觀謙抑性論證</span>
+                    <span class="toc-l3">（二）舊客觀說的承繼</span>
+                    <span class="toc-l3">（三）批判客觀未遂理論（針對客觀危險概念 + 針對其理據）</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="toc-l1">
+              <span class="toc-l1-num">參</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">建構未遂犯可罰性基礎</div>
+                <div class="toc-l2"><span class="toc-l2-num">一、</span><span>自由法理念下的侵害原則（命題 + 法主體性論述證立）</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">二、</span><span>由侵害原則決定可罰性起點（犯行原則再定義）</span></div>
+              </div>
+            </div>
+            <div class="toc-l1">
+              <span class="toc-l1-num">肆</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">界定著手實行概念</div>
+                <div class="toc-l2">
+                  <span class="toc-l2-num">一、</span>
+                  <div style="flex:1;min-width:0">
+                    <div>著手實行之理論定位點</div>
+                    <span class="toc-l3">（一）刑法規範性作為定位點：規範意義下的風險輸出</span>
+                    <span class="toc-l4">風險輸出的更具體定義 → 以行為人主觀認知的事實為基礎 → 行為人主觀認知的時間點 → 作為／不作為概念的新理解 → 事前／事後概念的再詮釋 → 批判性功能</span>
+                    <span class="toc-l3">（二）行為人主觀作為定位點：主觀意義下的風險輸出</span>
+                  </div>
+                </div>
+                <div class="toc-l2">
+                  <span class="toc-l2-num">二、</span>
+                  <div style="flex:1;min-width:0">
+                    <div>主觀風險輸出與規範風險輸出之相互關係</div>
+                    <span class="toc-l3">（一）兩者的解離可能性</span>
+                    <span class="toc-l3">（二）主觀風險輸出與規範風險輸出合致</span>
+                    <span class="toc-l3">（三）主觀風險輸出先於規範風險輸出（同一風險關係解決）</span>
+                    <span class="toc-l3">（四）規範風險輸出先於主觀風險輸出（風險提前輸出）</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="toc-l1"><span class="toc-l1-num">伍</span><span class="toc-l1-text">結論</span></div>
+          </div>
+        </div>
+
+        <div class="card-footer" onclick="event.stopPropagation()">
+          <div class="doi-text">DOI：<span class="doi-val">10.6199/NTULJ.201803_47(1).0007</span></div>
+          <div class="doi-text" style="margin-left:18px">計畫：<span class="doi-val">MOST 104-2410-H-002-076-MY2</span></div>
+          <a class="read-btn" href="https://drive.google.com/drive/search?q=%E6%9C%AA%E9%81%82%E7%8A%AF%E5%8F%AF%E7%BD%B0%E6%80%A7%E5%9F%BA%E7%A4%8E" target="_blank" onclick="event.stopPropagation()">📄 查看原文</a>
+        </div>
+      </div>
+    </div>
+    <!-- /CHOU CARD 2 -->
+
+    <div class="ornament">✦ · · · ✦</div>
+    <div style="text-align:center;font-size:.7rem;color:var(--gray);letter-spacing:.18em;margin-bottom:16px">持續收錄中</div>
+  </div>
+</div>
+<!-- END AUTHOR: chou -->
+
+<!-- AUTHOR: tsai -->
+<div class="main author-panel" id="panel-tsai" style="display:none">
+  <div class="prof-bar">
+    <div class="prof-portrait">
+      <img src="https://www.law.ntpu.edu.tw/zh/upload/faculty/1702356765_1.png" alt="蔡聖偉教授"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <span class="prof-portrait-initial" style="display:none">蔡</span>
+    </div>
+    <div class="prof-identity">
+      <div class="prof-name-zh">蔡聖偉</div>
+      <div class="prof-name-en">Sheng-Wei Tsai</div>
+    </div>
+    <div class="prof-meta">
+      <div class="prof-info-row"><span class="prof-info-label">職稱</span><span class="prof-info-value">教授</span></div>
+      <div class="prof-info-row"><span class="prof-info-label">單位</span><span class="prof-info-value">臺北大學法律學院</span></div>
+      <div class="prof-info-row"><span class="prof-info-label">領域</span><span class="prof-info-value">刑法總則、財產犯罪、案例解析方法論</span></div>
+    </div>
+    <div class="prof-tags">
+      <div class="prof-tags-label">關鍵詞篩選</div>
+      <div class="tag-list"><span class="tag active" onclick="filterTagTsai(this,'all')">全部</span>
+        <span class="tag" onclick="filterTagTsai(this,'正當防衛')">正當防衛</span>
+        <span class="tag" onclick="filterTagTsai(this,'緊急避難')">緊急避難</span>
+        <span class="tag" onclick="filterTagTsai(this,'現在性')">現在性</span></div>
+    </div>
+    <div class="prof-count">
+      <div class="prof-count-num">2</div>
+      <div class="prof-count-label">篇　論　文</div>
+    </div>
+  </div>
+
+  <div class="cards-area">    <div class="section-header">
+      <div class="section-title">論文列表</div>
+      
+    
+    </div>
+
+    <!-- TSAI CARD 1: 狗咬狗 -->
+    <div class="article-card" id="tsai-card-1" data-tags="正當防衛 緊急避難" onclick="toggleCard('tsai-card-1',event)" style="animation-delay:.05s">
+      <div class="card-header">
+        <div>
+          <div class="card-meta">
+            <span class="card-journal">月旦法學教室</span>
+            <span class="card-dot">·</span>
+            <span class="card-year">第275期 ／ 2025.9</span>
+          </div>
+          <div class="card-title-zh">狗咬狗──攻擊型／防禦型緊急避難</div>
+          <div class="card-title-en">Offensive vs. Defensive Emergency Defense</div>
+          <div class="card-keywords">
+            <span class="keyword">正當防衛</span><span class="keyword">緊急避難</span>
+            <span class="keyword">攻擊型緊急避難</span><span class="keyword">防禦型緊急避難</span>
+          </div>
+        </div>
+        <div class="card-toggle">＋</div>
+      </div>
+
+      <div class="card-body" onclick="event.stopPropagation()" id="body-tsai-card-1">
+        <div class="body-tabs">
+          <div class="body-tab active" onclick="switchTab('tsai-card-1','abstract')">摘要</div>
+          <div class="body-tab" onclick="switchTab('tsai-card-1','issues')">爭點整理</div>
+          <div class="body-tab" onclick="switchTab('tsai-card-1','toc')">目次</div>
+        </div>
+
+        <!-- 摘要 -->
+        <div class="tab-panel active" id="tsai-card-1-abstract" onclick="event.stopPropagation()">
+          <div class="abstract-text">
+            本文以「狗咬狗」案例為素材，聚焦於<strong>阻卻違法事由的審查</strong>，特別討論兩個核心問題：一、正當防衛與緊急避難的區辨；二、<em>攻擊型緊急避難</em>與<em>防禦型緊急避難</em>的差異與區分實益。<br><br>
+            案例中甲對鬥牛犬的踢踹（危難源於被犧牲者）屬防禦型緊急避難，審查較寬；甲以第三人丙的柺杖刺向不法侵害者乙，涉及正當防衛；甲以柺杖毀損丙之財產（危難轉嫁無關第三人）屬攻擊型緊急避難，審查較嚴。<br><br>
+            結論：<strong>甲的所有行為均不構成犯罪</strong>。
+          </div>
+        </div>
+
+        <!-- 爭點整理 -->
+        <div class="tab-panel" id="tsai-card-1-issues" onclick="event.stopPropagation()">
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點一</span>
+              <span class="issue-title">踢踹鬥牛犬——正當防衛還是緊急避難？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-crit">✗ 正當防衛</span>
+                <div class="doctrine-who">現今通說<br>（林鈺雄、Kindhäuser）</div>
+              </div>
+              <div class="doctrine-content">
+                鬥牛犬掙脫係<strong>自然現象</strong>，持有人乙無故意或過失，並非第23條所稱「侵害」。過去「對物防衛」概念（洪福增、陳子平）主張仍可正當防衛，但現已為通說所否認。
+                <div class="doctrine-sub">✗ 無不法侵害 → 正當防衛無從成立</div>
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">✓ 防禦型緊急避難</span>
+                <div class="doctrine-who">作者見解（蔡聖偉）</div>
+              </div>
+              <div class="doctrine-content">
+                鬥牛犬正是<em>危難來源</em>，屬<strong>防禦型緊急避難</strong>（危險源於被犧牲者）。被犧牲者原應監控危險，避難者只是阻止危險外溢。
+                <div class="doctrine-sub">
+                  衡平性審查較<em>寬鬆</em>：僅須被犧牲之利益未超過保全利益即可。<br>
+                  保全利益（吉娃娃）≈ 犧牲利益（鬥牛犬），均屬財產法益，符合衡平性 → <strong>阻卻違法</strong>。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點二</span>
+              <span class="issue-title">持柺杖毀損丙之財產——攻擊型緊急避難可否阻卻違法？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">甲說（通說）</span>
+                <div class="doctrine-who">許澤天、王皇玉<br>黃惠婷</div>
+              </div>
+              <div class="doctrine-content">
+                基於<strong>社會連帶思維</strong>，只要符合衡平性，攻擊型緊急避難仍可阻卻違法。但因讓無辜他人犧牲，衡平性門檻應<em>調高</em>：保全利益須<strong>明顯優於</strong>犧牲利益，始可要求被犧牲者忍受。
+                <div class="doctrine-sub">本案：保全利益（甲身體法益）明顯優於犧牲利益（丙的柺杖財產法益）→ 符合明顯優位要求 → 阻卻違法。</div>
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">乙說（少數）</span>
+                <div class="doctrine-who">周漾沂、王效文</div>
+              </div>
+              <div class="doctrine-content">
+                生活中的風險應由個人承擔，他人不負積極協助或犧牲義務。攻擊型緊急避難者<strong>強制他人承受本應由自己承擔的風險</strong>，侵害被犧牲者外在自由領域，應評價成違法行為（讓對方有主張正當防衛的可能）。至多僅能減免罪責。
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（蔡聖偉）</div>
+              <div class="conclusion-text">
+                採<strong>甲說（通說）</strong>。主觀阻卻違法意思的判斷與故意判斷相同，行為人僅需對相關事實有所認知，評價成防衛意思或避難意思是涵攝後的結論，非行為人認知的對象，故無「防衛意思轉換為避難意思」的問題。<strong>攻擊型緊急避難阻卻違法，不成立毀損罪。</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點三</span>
+              <span class="issue-title">甲拿走柺杖——構成竊盜罪？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-crit">✗ 主觀不該當</span>
+                <div class="doctrine-who">通說<br>（林山田、甘添貴、許澤天）</div>
+              </div>
+              <div class="doctrine-content">
+                竊盜罪為<strong>意圖犯</strong>，須具「不法所有意圖」，含消極的「剝奪所有」意思與積極的「據為己有」意思。
+                <div class="doctrine-sub">
+                  甲無意持續剝奪丙利用柺杖的可能性 → <em>無剝奪所有意思</em>。<br>
+                  竊盜罪屬取得犯，與毀損罪（損害罪）本質不同，即便甲認識到柺杖毀損的可能性，亦不能評價為「據為己有」的意思（林山田、甘添貴、許澤天；德國通說 Tenckhoff、Wessels）。<br>
+                  → 主觀構成要件<strong>不該當</strong>，不成立竊盜罪，亦不成立搶奪罪或其他財產犯罪。
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 目次 -->
+        <div class="tab-panel" id="tsai-card-1-toc" onclick="event.stopPropagation()">
+          <div style="max-width:100%">
+            <div class="toc-l1"><span class="toc-l1-num">壹</span><span class="toc-l1-text">爭點</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">貳</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">解析</div>
+                <div class="toc-l2"><span class="toc-l2-num">一、</span><span>踢踹鬥牛犬可能構成第354條毀損器物罪</span></div>
+                <div class="toc-l3">→ 緊急避難（防禦型）阻卻違法，不成立</div>
+                <div class="toc-l2"><span class="toc-l2-num">二、</span><span>持柺杖猛刺可能構成第277條第1項故意傷害既遂罪</span></div>
+                <div class="toc-l3">→ 正當防衛阻卻違法，不成立</div>
+                <div class="toc-l2"><span class="toc-l2-num">三、</span><span>持柺杖猛刺可能構成第354條毀損器物罪</span></div>
+                <div class="toc-l3">→ 緊急避難（攻擊型）阻卻違法，不成立</div>
+                <div class="toc-l2"><span class="toc-l2-num">四、</span><span>拿走柺杖可能構成第320條第1項竊盜罪</span></div>
+                <div class="toc-l3">→ 欠缺不法所有意圖，主觀不該當，不成立</div>
+              </div>
+            </div>
+            <div class="toc-l1"><span class="toc-l1-num">參</span><span class="toc-l1-text">結論：甲之行為不構成任何犯罪</span></div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="doi-text">DOI：<span class="doi-val">10.53106/1684739327503</span></div>
+          <div class="doi-text" style="margin-left:18px">出處：<span class="doi-val">月旦法學教室 第275期</span></div>
+          <a class="read-btn" href="https://drive.google.com/drive/search?q=%E8%AB%96%E6%9C%AA%E4%BA%86%E6%9C%AA%E9%81%82%E4%B8%AD%E6%AD%A2" target="_blank" onclick="event.stopPropagation()">📄 查看原文</a>
+        </div>
+      </div>
+    </div>
+    <!-- /TSAI CARD 1 -->
+
+    <!-- TSAI CARD 2: 臨門一腳 -->
+    <div class="article-card" id="tsai-card-2" data-tags="正當防衛 現在性" onclick="toggleCard('tsai-card-2',event)" style="animation-delay:.10s">
+      <div class="card-header">
+        <div>
+          <div class="card-meta">
+            <span class="card-journal">月旦法學教室</span>
+            <span class="card-dot">·</span>
+            <span class="card-year">第282期 ／ 2026.4</span>
+          </div>
+          <div class="card-title-zh">臨門一腳：侵害現在性的判斷</div>
+          <div class="card-title-en">The Imminence of Unlawful Aggression in Self-Defense</div>
+          <div class="card-keywords">
+            <span class="keyword">正當防衛</span><span class="keyword">現在性</span>
+            <span class="keyword">不法侵害</span><span class="keyword">著手實行</span>
+          </div>
+        </div>
+        <div class="card-toggle">＋</div>
+      </div>
+
+      <div class="card-body" onclick="event.stopPropagation()" id="body-tsai-card-2">
+        <div class="body-tabs">
+          <div class="body-tab active" onclick="switchTab('tsai-card-2','abstract')">摘要</div>
+          <div class="body-tab" onclick="switchTab('tsai-card-2','issues')">爭點整理</div>
+          <div class="body-tab" onclick="switchTab('tsai-card-2','toc')">目次</div>
+        </div>
+
+        <!-- 摘要 -->
+        <div class="tab-panel active" id="tsai-card-2-abstract" onclick="event.stopPropagation()">
+          <div class="abstract-text">
+            本文以最高法院111年度台上字第3235號刑事判決為素材，聚焦於正當防衛防衛情狀中<strong>侵害現在性</strong>（Gegenwärtigkeit）的認定問題。<br><br>
+            核心爭點在於：甲踢踹車門時，乙僅是嘗試拿取（但尚未取得）鐵管，此攻擊行為是否已屬「現在」之不法侵害？<br><br>
+            本文介紹四種學說立場（著手實行說、預備行為最後階段說、有效防衛說、具體危險說），並主張<em>著手實行說不可採</em>，理由在於侵害現在性的認定與著手實行的認定各自處於不同問題脈絡，不應串連掛勾。<strong>本案肯定侵害現在性，甲構成正當防衛。</strong>
+          </div>
+        </div>
+
+        <!-- 爭點整理 -->
+        <div class="tab-panel" id="tsai-card-2-issues" onclick="event.stopPropagation()">
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點</span>
+              <span class="issue-title">正當防衛「侵害現在性」的始點如何認定？</span>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-crit">甲說（不可採）</span>
+                <div class="doctrine-who">著手實行說<br>蔡墩銘、柯耀程<br>周漾沂（法權原則）</div>
+              </div>
+              <div class="doctrine-content">
+                第23條要求侵害須屬「現在」，語意上不包含尚未開始的攻擊。只有刑事不法行為（著手後、終了前）才是適格的不法侵害，故侵害行為起點為<strong>攻擊者著手實行</strong>。
+                <div class="doctrine-sub">
+                  ✗ <em>批評（蔡聖偉）</em>：此說源於德國古典犯罪論時期，導致形式客觀理論遭批「不利於法益保護」——著手時點延後，同時壓縮防衛空間。「糖果屋」案：妹妹若等巫婆著手，將錯失唯一有效防衛時機。<br>
+                  ✗ 侵害現在性與著手實行各處不同問題脈絡，<strong>不應串連掛勾</strong>（Schmidhäuser、Roxin、薛智仁、陳子平）。
+                </div>
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">乙說</span>
+                <div class="doctrine-who">預備行為最後階段說<br>Roxin、林鈺雄<br>許恒達、許澤天</div>
+              </div>
+              <div class="doctrine-content">
+                著手判準過度壓縮防衛空間，但以攻擊法益的行為階段界定現在性則屬正確。應將侵害行為起點<strong>前移至預備行為的最終階段</strong>（das Endstadium der Vorbereitung），緊鄰於著手實行前的密接行為。
+                <div class="doctrine-sub">✗ 以著手時點作為基準往前調校，基準點本身不確定，連帶影響該判準的適用安定性。</div>
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">丙說</span>
+                <div class="doctrine-who">有效防衛說<br>Schmidhäuser、黃榮堅<br>黃惠婷</div>
+              </div>
+              <div class="doctrine-content">
+                應從正當防衛機制的<strong>目的</strong>切入——有效保護權利。侵害行為起點係指，侵害行為已進展至<em>防衛者最後的有效防衛時間點</em>，一旦逾越，防衛者將無法或難以達到防衛目的，或須付出額外代價。
+              </div>
+            </div>
+
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">丁說（通說）✓</span>
+                <div class="doctrine-who">具體危險說<br>Heinrich、Kindhäuser<br>薛智仁、黃常仁<br>王皇玉、林書楷</div>
+              </div>
+              <div class="doctrine-content">
+                觀察的切入點應在於<strong>被攻擊的法益</strong>。現在性的判斷取決於相關法益是否面臨<em>具體危險</em>。倘若已有遲延危險的急迫性（當下若不阻止預備行為，很可能立即轉變成實害），即可肯定存有現在侵害。
+                <div class="doctrine-sub">需注意：僅有抽象危險尚不足夠，須有客觀上的具體事證。</div>
+              </div>
+            </div>
+
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（蔡聖偉）</div>
+              <div class="conclusion-text">
+                <strong>甲說不可採</strong>。侵害現在性的認定與著手認定各自處於不同問題脈絡，前者涉及防衛者的可罰性（何時應允許人民實現構成要件維護權利），後者涉及行為人的刑罰正當性——兩者<em>沒有任何事理上的關聯性</em>，不應串連。<br><br>
+                本案中，乙拿取鐵管已屬<strong>預備行為的最後階段</strong>，也是最後的有效防衛時點，同時也體現為身體傷害的具體危險，故無論依乙說、丙說或丁說，均肯定侵害現在性。甲踢踹車門屬適當且必要之防衛行為，<strong>正當防衛阻卻違法</strong>。
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 目次 -->
+        <div class="tab-panel" id="tsai-card-2-toc" onclick="event.stopPropagation()">
+          <div style="max-width:100%">
+            <div class="toc-l1"><span class="toc-l1-num">壹</span><span class="toc-l1-text">爭點：正當防衛防衛情狀中「侵害之現在性」的認定</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">貳</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">解析</div>
+                <div class="toc-l2"><span class="toc-l2-num"></span><span>甲踢踹車門可能構成第277條第1項故意傷害既遂罪</span></div>
+                <div class="toc-l3">四種學說介紹：甲說（著手）、乙說（預備最後階段）、丙說（有效防衛）、丁說（具體危險）</div>
+                <div class="toc-l3">甲說不可採之論證（糖果屋案例）</div>
+                <div class="toc-l3">司法實務判決分析</div>
+                <div class="toc-l3">本案結論：肯定現在性 → 正當防衛成立 → 阻卻違法</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="doi-text">DOI：<span class="doi-val">10.53106/1684739328204</span></div>
+          <div class="doi-text" style="margin-left:18px">出處：<span class="doi-val">月旦法學教室 第282期</span></div>
+          <a class="read-btn" href="https://drive.google.com/drive/search?q=%E8%87%A8%E9%96%80%E4%B8%80%E8%85%B3%20%E8%94%A1%E8%81%96%E5%81%89" target="_blank" onclick="event.stopPropagation()">📄 查看原文</a>
+        </div>
+      </div>
+    </div>
+    <!-- /TSAI CARD 2 -->
+
+    <div class="ornament">✦ · · · ✦</div>
+    <div style="text-align:center;font-size:.7rem;color:var(--gray);letter-spacing:.18em;margin-bottom:16px">持續收錄中</div>
+  </div>
+</div>
+<!-- END AUTHOR: tsai -->
+
+<!-- BEGIN AUTHOR: xue -->
+<div class="main author-panel" id="panel-xue" style="display:none">
+  <div class="prof-bar">
+    <div class="prof-portrait">
+      <img src="https://www.law.ntu.edu.tw/media/k2/items/cache/bf43a85b4a34df8c6b0cd24399aa35c3_M.jpg" alt="薛智仁教授"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <span class="prof-portrait-initial" style="display:none">薛</span>
+    </div>
+    <div class="prof-identity">
+      <div class="prof-name-zh">薛智仁</div>
+      <div class="prof-name-en">Chih-Jen Hsueh</div>
+    </div>
+    <div class="prof-meta">
+      <div class="prof-info-row"><span class="prof-info-label">職稱</span><span class="prof-info-value">教授</span></div>
+      <div class="prof-info-row"><span class="prof-info-label">單位</span><span class="prof-info-value">臺灣大學法律學院</span></div>
+      <div class="prof-info-row"><span class="prof-info-label">領域</span><span class="prof-info-value">刑法總則、阻卻違法事由、裁判評析</span></div>
+    </div>
+    <div class="prof-tags">
+      <div class="prof-tags-label">關鍵詞篩選</div>
+      <div class="tag-list"><span class="tag active" onclick="filterTagXue(this,'all')">全部</span>
+        <span class="tag" onclick="filterTagXue(this,'緊急避難')">緊急避難</span>
+        <span class="tag" onclick="filterTagXue(this,'自招危難')">自招危難</span>
+        <span class="tag" onclick="filterTagXue(this,'墮胎')">墮胎罪</span></div>
+    </div>
+    <div class="prof-count">
+      <div class="prof-count-num">2</div>
+      <div class="prof-count-label">篇　論　文</div>
+    </div>
+  </div>
+
+  <div class="cards-area">    <div class="section-header">
+      <div class="section-title">論文列表</div>
+      
+    
+    </div>
+
+    <!-- XUE CARD 1: 自招危難 -->
+    <div class="article-card" id="xue-card-1" data-tags="緊急避難 自招危難" onclick="toggleCard('xue-card-1',event)" style="animation-delay:.05s">
+      <div class="card-header">
+        <div>
+          <div class="card-meta">
+            <span class="card-journal">台灣法律人</span>
+            <span class="card-dot">·</span>
+            <span class="card-year">No.44 ／ 2025.9</span>
+          </div>
+          <div class="card-title-zh">自招危難與緊急避難──最高法院113年度台上字第4285號刑事判決</div>
+          <div class="card-title-en">Self-Inflicted Emergency and Necessity Defense</div>
+          <div class="card-keywords">
+            <span class="keyword">緊急避難</span><span class="keyword">自招危難</span>
+            <span class="keyword">保護優越利益</span><span class="keyword">社會連帶義務</span><span class="keyword">裁判簡析</span>
+          </div>
+        </div>
+        <div class="card-toggle">＋</div>
+      </div>
+
+      <div class="card-body" onclick="event.stopPropagation()" id="body-xue-card-1">
+        <div class="body-tabs">
+          <div class="body-tab active" onclick="switchTab('xue-card-1','abstract')">摘要</div>
+          <div class="body-tab" onclick="switchTab('xue-card-1','issues')">爭點整理</div>
+          <div class="body-tab" onclick="switchTab('xue-card-1','toc')">目次</div>
+        </div>
+
+        <!-- 摘要 -->
+        <div class="tab-panel active" id="xue-card-1-abstract" onclick="event.stopPropagation()">
+          <div class="abstract-text">
+            本文評析最高法院113年度台上字第4285號刑事判決，該判決處理<strong>自招危難能否主張緊急避難</strong>的問題，偏離最高法院40餘年來「自招危難絕對不得主張緊急避難」的穩定見解，轉向多數學說的<em>區分說</em>。<br><br>
+            本文除評析判決之得失，另深入探討：一、緊急避難的<strong>法理基礎</strong>（保護優越利益 vs. 個人自主原則與社會連帶義務之調和）；二、<strong>自招危難概念</strong>的重新界定（應以「遭遇危難之人」而非「避難行為人」為主體）；三、自招危難的<strong>法律效果</strong>（避難行為門檻提高、自招危難行為本身之獨立論罪）。<br><br>
+            結論指出本案根本<em>不屬自招危難</em>案件，被告未申請夜間施工許可係避難行為人可歸責地招致<strong>他人</strong>危難，不影響遭遇危難之人（鄰房住戶）的緊急避難權限。
+          </div>
+        </div>
+
+        <!-- 爭點整理 -->
+        <div class="tab-panel" id="xue-card-1-issues" onclick="event.stopPropagation()">
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點一</span>
+              <span class="issue-title">緊急避難的法理基礎為何？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">保護優越利益說</span>
+                <div class="doctrine-who">我國主流學說<br>最高法院109年台上3695</div>
+              </div>
+              <div class="doctrine-content">
+                避難行為以犧牲低價值財產保全高價值生命，從國家社會角度提升整體利益，因而被法秩序容許。此一<strong>效益主義觀點</strong>將集體利益置於個人之上，只重視行為是否讓集體利益總和最大化，利益在個人間如何分配並不重要。
+                <div class="doctrine-sub">✗ 批評（薛智仁）：忽略個人與個人的權利衝突面向，無法解釋被避難人忍受避難行為侵害的義務，不適合作為緊急避難的法理基礎。</div>
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">最高法院早期見解</span>
+                <div class="doctrine-who">72年台上7058</div>
+              </div>
+              <div class="doctrine-content">
+                緊急避難不罰係「基於社會之公平與正義」，自招危難者（故意或過失）不得主張緊急避難。
+                <div class="doctrine-sub">✗ 批評：「社會公平正義」是空洞說詞，無從得知自招危難實施避難行為是否違反公平正義；且錯誤封鎖保全優越利益的合法避難可能性。</div>
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（薛智仁）</div>
+              <div class="conclusion-text">
+                緊急避難的法理基礎在於<strong>個人自主原則與社會連帶義務的調和</strong>：被避難人在保全重大優越利益的範圍內例外負有忍受社會連帶義務。攻擊性緊急避難權限來自被避難人的社會連帶義務（保全明顯重大利益）；防禦性緊急避難權限來自被避難人防禦危險的義務（保全利益合比例性即可）。
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點二</span>
+              <span class="issue-title">「自招危難」的概念應如何界定？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">通說定義（過寬且過窄）</span>
+                <div class="doctrine-who">我國學說與實務<br>許恒達、謝開平<br>陳志輝、李聖傑等</div>
+              </div>
+              <div class="doctrine-content">
+                「<strong>避難行為人</strong>」以故意或過失的可歸責前行為引起緊急危難。
+                <div class="doctrine-sub">
+                  ✗ <em>定義過寬</em>：避難行為人可歸責地招致<strong>他人</strong>危難時，遭遇危難之人的緊急避難權限不應受影響，不生限制緊急避難的問題（如登山客弄壞同伴衣物，代同伴侵入山屋）。<br>
+                  ✗ <em>定義過窄</em>：避難行為人未可歸責時，即使遭遇危難之人可歸責地招致自己危難，也無法被歸類為自招危難，錯失限制緊急避難的機會。
+                </div>
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（薛智仁）</div>
+              <div class="conclusion-text">
+                自招危難概念應重新定義為：「<strong>遭遇危難之人</strong>」可歸責地招致自己的危難，由自己或第三人實施避難行為——<em>不包括</em>單純避難行為人可歸責地招致他人危難的情形。此定義精準涵蓋具有共通規範問題的案件：唯有遭遇危難之人自招危難，才會影響其與被避難人之間的義務分配關係。
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點三</span>
+              <span class="issue-title">自招危難的法律效果：避難行為 + 自招危難行為各自如何評價？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">多數學說（區分說）</span>
+                <div class="doctrine-who">林山田、林鈺雄、王皇玉<br>許恒達、謝開平等</div>
+              </div>
+              <div class="doctrine-content">
+                區分<strong>意圖式挑唆避難</strong>（絕對禁止，屬權利濫用）與<strong>其他自招危難</strong>（嚴格適用緊急避難）。自招危難→降低保全利益的保護必要性→避難行為須在更嚴格要件下才能阻卻違法。
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">少數學說</span>
+                <div class="doctrine-who">黃榮堅、薛智仁</div>
+              </div>
+              <div class="doctrine-content">
+                即使避難行為能阻卻違法性，亦不影響獨立審查<strong>自招危難行為</strong>是否成立犯罪的必要性（原因不法行為理論 actio illicita in causa）。
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（薛智仁）</div>
+              <div class="conclusion-text">
+                <strong>避難行為</strong>：自招危難重大違反對己義務者，避難行為門檻提高（攻擊性緊急避難須明顯優越；防禦性緊急避難須合比例）。意圖式挑唆避難<em>不宜</em>以「權利濫用」絕對禁止，而應作為重大降低保護必要性的因素，保留例外通過的空間。<br><br>
+                <strong>自招危難行為</strong>：應支持原因不法行為理論。限定行為模式犯的行為模式限制，僅指立法者只處罰透過此路徑所造成的法益侵害，不代表行為人須親自實施符合構成要件的行為模式。自招危難行為客觀可歸責地實現犯罪構成要件，主觀具故意或過失者，<strong>即應成立犯罪，與避難行為是否成立犯罪無關</strong>。
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點四</span>
+              <span class="issue-title">本案判決的評析</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">判決見解（113台上4285）</span>
+                <div class="doctrine-who">最高法院刑事第二庭</div>
+              </div>
+              <div class="doctrine-content">
+                偏離40餘年穩定見解，採多數學說區分說：意圖式挑唆避難=權利濫用不得主張；其他自招危難=從嚴審查「社會倫理適當性」，避難行為係屬必要不可欠缺、保護法益非僅個人利益、保護法益明顯優越者，仍得阻卻違法。
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者評析（薛智仁）</div>
+              <div class="conclusion-text">
+                ✓ <strong>正確</strong>：不再絕對否定自招危難主張緊急避難，方向值得贊同。<br>
+                ✗ <strong>概念錯誤</strong>：本案被告違反夜間施工許可義務，係<em>避難行為人</em>可歸責地招致<strong>他人</strong>（鄰房住戶）危難，非「遭遇危難之人」自招危難，本案根本不是自招危難案件，不應限制避難行為的緊急避難權限。<br>
+                ✗ <strong>用語不當</strong>：「社會倫理適當性」易被誤解為正當防衛的社會倫理限制，未來不宜援引。<br>
+                ✗ <strong>條件模糊</strong>：「保護法益非僅限於個人法益」不應作為阻卻違法的必要條件，只能理解為有利避難行為人的利益權衡因素。
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 目次 -->
+        <div class="tab-panel" id="xue-card-1-toc" onclick="event.stopPropagation()">
+          <div style="max-width:100%">
+            <div class="toc-l1"><span class="toc-l1-num">壹</span><span class="toc-l1-text">問題背景</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">貳</span><span class="toc-l1-text">判決事實</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">參</span><span class="toc-l1-text">判決要旨</span></div>
+            <div class="toc-l1">
+              <span class="toc-l1-num">肆</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">判決簡評</div>
+                <div class="toc-l2"><span class="toc-l2-num">一、</span><span>緊急避難的法理基礎（保護優越利益 vs. 個人自主＋社會連帶）</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">二、</span><span>自招危難的概念釐清（主體應為「遭遇危難之人」）</span></div>
+                <div class="toc-l2">
+                  <span class="toc-l2-num">三、</span>
+                  <div style="flex:1;min-width:0">
+                    <div>自招危難的法律效果</div>
+                    <span class="toc-l3">（一）避難行為（門檻提高）</span>
+                    <span class="toc-l3">（二）自招危難行為（原因不法行為理論）</span>
+                    <span class="toc-l3">（三）小結</span>
+                  </div>
+                </div>
+                <div class="toc-l2"><span class="toc-l2-num">四、</span><span>本案判決分析（三點評論）</span></div>
+              </div>
+            </div>
+            <div class="toc-l1"><span class="toc-l1-num">伍</span><span class="toc-l1-text">結論</span></div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="doi-text">出處：<span class="doi-val">台灣法律人 No.44 ／ 2025.9</span></div>
+          <div class="doi-text" style="margin-left:18px">性質：<span class="doi-val">裁判簡析</span></div>
+          <a class="read-btn" href="https://drive.google.com/drive/search?q=%E8%87%AA%E6%8B%9B%E5%8D%B1%E9%9B%A3%20%E8%B6%A3%E6%99%BA%E4%BB%81" target="_blank" onclick="event.stopPropagation()">📄 查看原文</a>
+        </div>
+      </div>
+    </div>
+    <!-- /XUE CARD 1 -->
+
+    <!-- XUE CARD 2: 重新檢視保護胎兒 -->
+    <div class="article-card" id="xue-card-2" data-tags="墮胎 胎兒" onclick="toggleCard('xue-card-2',event)" style="animation-delay:.10s">
+      <div class="card-header">
+        <div>
+          <div class="card-meta">
+            <span class="card-journal">台灣法律人</span>
+            <span class="card-dot">·</span>
+            <span class="card-year">No.44 ／ 2025.9</span>
+          </div>
+          <div class="card-title-zh">重新檢視保護胎兒之刑法規範（專欄序言）</div>
+          <div class="card-title-en">Revisiting Criminal Law Norms for Fetal Protection</div>
+          <div class="card-keywords">
+            <span class="keyword">墮胎罪</span><span class="keyword">胎兒保護</span>
+            <span class="keyword">生育自主</span><span class="keyword">優生保健法</span><span class="keyword">人工流產同意權</span>
+          </div>
+        </div>
+        <div class="card-toggle">＋</div>
+      </div>
+
+      <div class="card-body" onclick="event.stopPropagation()" id="body-xue-card-2">
+        <div class="body-tabs">
+          <div class="body-tab active" onclick="switchTab('xue-card-2','abstract')">摘要</div>
+          <div class="body-tab" onclick="switchTab('xue-card-2','issues')">三篇論文整理</div>
+          <div class="body-tab" onclick="switchTab('xue-card-2','toc')">架構</div>
+        </div>
+
+        <!-- 摘要 -->
+        <div class="tab-panel active" id="xue-card-2-abstract" onclick="event.stopPropagation()">
+          <div class="abstract-text">
+            本文為薛智仁主編之<strong>專欄序言</strong>，統整介紹三篇探討墮胎罪的學術論文。背景：2024年11月法務部預告修正提高刑法墮胎罪罰金額度，墮胎除罪化再度引發立法政策討論。<br><br>
+            現行規範架構：刑法第24章墮胎罪章保護胎兒生命，1984年優生保健法第9條明定人工流產事由，阻卻墮胎行為違法性。此一規範架構是否均衡維護<em>胎兒生命</em>與<em>孕婦身體自主權</em>，一直存在爭議。<br><br>
+            <strong>注意</strong>：薛智仁本人為本文作者（序言），非三篇論文的作者。三篇論文作者分別為：<strong>林琬珊</strong>（致胎兒死傷案件的刑法歸責）、<strong>廖宜寧</strong>（墮胎罪的義務建構與孕婦自主）、<strong>黃種甲</strong>（人工流產同意權正當性）。
+          </div>
+        </div>
+
+        <!-- 三篇論文整理 -->
+        <div class="tab-panel" id="xue-card-2-issues" onclick="event.stopPropagation()">
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">論文一</span>
+              <span class="issue-title">致胎兒死傷案件之刑法歸責問題探討（林琬珊）</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">核心問題</span>
+                <div class="doctrine-who">行為客體定性</div>
+              </div>
+              <div class="doctrine-content">
+                孕婦或第三人在懷孕期間故意或過失加害胎兒，致使胎兒<strong>出生為人後</strong>死亡或受傷，行為人是否成立殺人罪、過失致死罪或傷害罪？
+                <div class="doctrine-sub">
+                  關鍵：刑法對已出生的「人」和未出生的「胎兒」提供不同保障，行為客體應定性為人或胎兒，對適用罪名產生決定性影響。<br>
+                  方法：參考日本學說與實務討論，提出我國法的適用與立法建議。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">論文二</span>
+              <span class="issue-title">胎兒保護與生育自主的衝突？──墮胎罪中的具體義務建構（廖宜寧）</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">核心主張</span>
+                <div class="doctrine-who">廢除孕婦墮胎罪</div>
+              </div>
+              <div class="doctrine-content">
+                現行墮胎罪實質上課予孕婦<strong>繼續妊娠的作為義務</strong>，使孕婦承擔難以回復的傷害後果，不可避免地造成適用上的不平等，從而欠缺正當性。
+                <div class="doctrine-sub">
+                  主張：<em>廢除孕婦墮胎罪</em>、限縮第三人墮胎罪、刪除優生保健法配偶同意權規定。
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">論文三</span>
+              <span class="issue-title">再探墮胎罪之阻卻違法事由──以優生保健法人工流產同意權保護對象之釐清為中心（黃種甲）</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">核心問題</span>
+                <div class="doctrine-who">同意權正當性</div>
+              </div>
+              <div class="doctrine-content">
+                優生保健法第9條第2項：孕婦自願終止妊娠應得<strong>法定代理人或配偶同意</strong>，此規定一直受學界與婦運團體強烈質疑。
+                <div class="doctrine-sub">
+                  分析各種規範理由後，指出保護胎兒生命雖是最可能的規範理由，但<em>同意權無法達成保護胎兒的效果</em>，反而有副作用。<br>
+                  主張：廢除人工流產同意權，回歸適用刑法墮胎罪與優生保健法第9條第1項。
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 目次/架構 -->
+        <div class="tab-panel" id="xue-card-2-toc" onclick="event.stopPropagation()">
+          <div style="max-width:100%">
+            <div style="font-size:.8rem;color:var(--gray);margin-bottom:16px;line-height:1.8">本文為<strong>專欄序言</strong>，共介紹三篇論文。</div>
+            <div class="toc-l1"><span class="toc-l1-num">一</span><span class="toc-l1-text">致胎兒死傷案件之刑法歸責問題探討──林琬珊</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">二</span><span class="toc-l1-text">胎兒保護與生育自主的衝突？──廖宜寧</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">三</span><span class="toc-l1-text">再探墮胎罪之阻卻違法事由──黃種甲</span></div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="doi-text">出處：<span class="doi-val">台灣法律人 No.44 ／ 2025.9</span></div>
+          <div class="doi-text" style="margin-left:18px">性質：<span class="doi-val">專欄序言</span></div>
+          <a class="read-btn" href="https://drive.google.com/drive/search?q=%E4%BF%9D%E8%AD%B7%E8%83%8E%E5%85%92%20%E8%B6%A3%E6%99%BA%E4%BB%81" target="_blank" onclick="event.stopPropagation()">📄 查看原文</a>
+        </div>
+      </div>
+    </div>
+    <!-- /XUE CARD 2 -->
+
+    <div class="ornament">✦ · · · ✦</div>
+    <div style="text-align:center;font-size:.7rem;color:var(--gray);letter-spacing:.18em;margin-bottom:16px">持續收錄中</div>
+  </div>
+</div>
+<!-- END AUTHOR: xue -->
+
+<!-- BEGIN AUTHOR: hsu -->
+<div class="main author-panel" id="panel-hsu" style="display:none">
+  <div class="prof-bar">
+    <div class="prof-portrait">
+      <img src="https://www.law.ntu.edu.tw/media/k2/items/cache/5e0e36e3c5e4e1e1e1e1e1e1e1e1e1e1_M.jpg" alt="許恒達教授"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <span class="prof-portrait-initial" style="display:none">許</span>
+    </div>
+    <div class="prof-identity">
+      <div class="prof-name-zh">許恒達</div>
+      <div class="prof-name-en">Heng-Da Hsu</div>
+    </div>
+    <div class="prof-meta">
+      <div class="prof-info-row"><span class="prof-info-label">職稱</span><span class="prof-info-value">教授</span></div>
+      <div class="prof-info-row"><span class="prof-info-label">單位</span><span class="prof-info-value">臺灣大學法律學院</span></div>
+      <div class="prof-info-row"><span class="prof-info-label">領域</span><span class="prof-info-value">刑法各論、財產犯罪、妨害自由罪</span></div>
+    </div>
+    <div class="prof-tags">
+      <div class="prof-tags-label">關鍵詞篩選</div>
+      <div class="tag-list"><span class="tag active" onclick="filterTagHsu(this,'all')">全部</span>
+        <span class="tag" onclick="filterTagHsu(this,'惡害通知')">惡害通知</span>
+        <span class="tag" onclick="filterTagHsu(this,'強制罪')">強制罪</span>
+        <span class="tag" onclick="filterTagHsu(this,'窘迫情境')">窘迫情境</span></div>
+    </div>
+    <div class="prof-count">
+      <div class="prof-count-num">2</div>
+      <div class="prof-count-label">篇　論　文</div>
+    </div>
+  </div>
+
+  <div class="cards-area">    <div class="section-header">
+      <div class="section-title">論文列表</div>
+      
+    
+    </div>
+
+    <!-- HSU CARD 1 -->
+    <div class="article-card" id="hsu-card-1" data-tags="惡害通知 強制罪 強制性交罪 恐嚇取財罪 窘迫情境" onclick="toggleCard('hsu-card-1',event)" style="animation-delay:.05s">
+      <div class="card-header">
+        <div>
+          <div class="card-meta">
+            <span class="card-journal">台灣法律人</span>
+            <span class="card-dot">·</span>
+            <span class="card-year">No.25 ／ 2023.7</span>
+          </div>
+          <div class="card-title-zh">論合法／不作為惡害通知的可罰界限</div>
+          <div class="card-title-en">On the Punishability of Lawful/Omission Threat Notifications</div>
+          <div class="card-keywords">
+            <span class="keyword">強制罪</span><span class="keyword">強制性交罪</span><span class="keyword">恐嚇取財罪</span>
+            <span class="keyword">惡害通知</span><span class="keyword">窘迫情境</span><span class="keyword">內在關聯性</span>
+          </div>
+        </div>
+        <div class="card-toggle">＋</div>
+      </div>
+
+      <div class="card-body" onclick="event.stopPropagation()" id="body-hsu-card-1" data-notion="https://www.notion.so/339e99acca278170b8e8ece138422f8e">
+        <div class="body-tabs">
+          <div class="body-tab active" onclick="switchTab('hsu-card-1','abstract')">摘要</div>
+          <div class="body-tab" onclick="switchTab('hsu-card-1','issues')">爭點整理</div>
+          <div class="body-tab" onclick="switchTab('hsu-card-1','toc')">目次</div>
+        </div>
+
+        <!-- 摘要 -->
+        <div class="tab-panel active" id="hsu-card-1-abstract" onclick="event.stopPropagation()">
+          <div class="abstract-text">
+            本文以<strong>強制罪、強制性交罪及恐嚇取財罪</strong>為中心，討論三罪中惡害通知型犯罪手法（脅迫／恐嚇）的規範定性。核心問題：<em>「合法作為之惡害」</em>與<em>「合法不作為之惡害」</em>能否構成三罪的構成要件行為？<br><br>
+            本文系統整理五種惡害通知類型（違法作為、違法不作為、合法作為、合法行為之不作為、違法行為之不作為），分別檢討各類型在三罪中的可罰性。<br><br>
+            <strong>作者主要看法</strong>：原則上只要是合法惡害均不足以該當脅迫或恐嚇行為，但若行為人利用被害人身處<em>窘迫情境</em>（類比重利罪），則被害人無異只能接受行為人的要求而實行受迫行為，此時仍可成立犯罪。
+          </div>
+        </div>
+
+        <!-- 爭點整理 -->
+        <div class="tab-panel" id="hsu-card-1-issues" onclick="event.stopPropagation()">
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點一</span>
+              <span class="issue-title">「合法作為」之惡害——能否構成脅迫或恐嚇？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">甲說：內在關聯性說（通說）</span>
+                <div class="doctrine-who">許澤天、王皇玉</div>
+              </div>
+              <div class="doctrine-content">
+                合法惡害通知仍可構成脅迫，成罪與否取決於合法惡害與受迫行為之間是否具有<strong>內在關聯性</strong>（Konnexität）。有內在關聯性（如：以民事訴訟要求返還屆期欠款）→ 被害人應自承，阻卻違法；無內在關聯性（如：以告發犯罪要求交付封口費）→ 成立犯罪。
+                <div class="doctrine-sub">
+                  ✗ <em>批評（許恒達）</em>：①內在關聯性概念模糊，標準不一，往往取決於被害人個人偏好（有錢者與貧窮者判斷可能相反）；②在未遂案例中無從操作；③實質上造成刑事責任取決於被害人道德選擇或欲望。
+                </div>
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">乙說：法律義務說（Rechtspflichttheorie）</span>
+                <div class="doctrine-who">Horn、Hoven</div>
+              </div>
+              <div class="doctrine-content">
+                只要惡害合法，被害人本來就必須承擔該惡害帶來的不利益；行為人透過合法惡害通知提供被害人另一種解決方案，係<strong>擴張</strong>被害人的選擇空間而非限制，一律不成立脅迫行為（直接在構成要件階段排除）。
+                <div class="doctrine-sub">✗ 盲點：當被害人欠缺周邊支持條件而身處窘迫情境時，所謂「自由交易」形同強制。</div>
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（許恒達）</div>
+              <div class="conclusion-text">
+                採<strong>修正後的法律義務說</strong>：合法作為惡害通知原則上不構成脅迫，但設定重要例外——<br><br>
+                若行為人<strong>利用被害人既存的「窘迫情境」</strong>，告知合法惡害通知，即可成立強制罪（類比重利罪的「類重利情境脅迫行為」wucherische Nötigung）。<br><br>
+                <strong>窘迫情境的判斷三要素</strong>（周邊條件欠缺型）：<br>
+                ①被害人出於某些既存特別事由，有強烈規避合法惡害的現實需求<br>
+                ②被害人除接受受迫行為外，別無其他更適切的方法規避合法惡害<br>
+                ③合法惡害可能帶來被害人相對嚴重的利益干擾<br><br>
+                另一型為「能力不足型」：被害人因輕率、無經驗、判斷力欠缺、意志薄弱等而欠缺適足權衡能力。
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點二</span>
+              <span class="issue-title">「合法行為之不作為」惡害——能否構成脅迫？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">區別說（Roxin、Jäger、Arzt、Zopfs）</span>
+                <div class="doctrine-who">德國主流學說</div>
+              </div>
+              <div class="doctrine-content">
+                合法不作為惡害必須有「<strong>類似作為的效果</strong>」才能成立脅迫，具體標準各家略有差異：Roxin 強調行為人須有「損害之前行為」；Jäger 強調不作為必須「劣化」而非僅維持現狀；Zopfs 強調行為人有「創設力道」。
+                <div class="doctrine-sub">✗ 批評（許恒達）：此說實為內在關聯性說的不作為版本，共享相同缺陷；且討論重點不應置於「通知前」的先行風險活動，而應聚焦於「通知行為當下」的被害人狀態。</div>
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（許恒達）</div>
+              <div class="conclusion-text">
+                <strong>同樣適用窘迫情境理論</strong>：合法不作為惡害通知原則上不成立脅迫，但例外於被害人身陷窘迫情境時（行為人利用被害人弱勢而告知可改變不利現狀的附條件救援），仍成立脅迫行為。<br><br>
+                判斷核心：不在於行為人是否先行創造既存風險，而在於<em>「通知行為當下」被害人狀態</em>——周邊支持條件是否充足。
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點三</span>
+              <span class="issue-title">「違法行為之不作為」惡害——能否構成脅迫？</span>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（許恒達）</div>
+              <div class="conclusion-text">
+                <strong>不成立脅迫行為</strong>（三罪均同）。法秩序不保護違法後果：被害人期待「惡害不出現」本身違反法秩序，不值得保護，故不能解讀為被害人因惡害出現而面臨利益缺損。<br><br>
+                例外注意：受迫行為若為給付金錢，可能構成行為人後續不法侵害行為的共犯責任（如例5-3職業殺手案）。
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 目次 -->
+        <div class="tab-panel" id="hsu-card-1-toc" onclick="event.stopPropagation()">
+          <div style="max-width:100%">
+            <div class="toc-l1"><span class="toc-l1-num">壹</span><span class="toc-l1-text">導論</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">貳</span><span class="toc-l1-text">基礎類型：「違法作為」之惡害（→ 三罪均成立）</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">參</span><span class="toc-l1-text">「違法不作為」之惡害（→ 三罪均成立）</span></div>
+            <div class="toc-l1">
+              <span class="toc-l1-num">肆</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">「合法作為」之惡害</div>
+                <div class="toc-l2"><span class="toc-l2-num">一、</span><span>學說分析：內在關聯性說 vs. 法律義務說</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">二、</span><span>學說檢討：強制罪（窘迫情境理論）</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">三、</span><span>學說檢討：恐嚇取財罪</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">四、</span><span>學說檢討：強制性交罪</span></div>
+              </div>
+            </div>
+            <div class="toc-l1">
+              <span class="toc-l1-num">伍</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">「『合法行為』之不作為」惡害</div>
+                <div class="toc-l2"><span class="toc-l2-num">一、</span><span>學說分析：內在關聯性說、法律義務說、區別說</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">二、</span><span>學說檢討：強制罪</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">三、</span><span>學說檢討：強制性交罪與恐嚇取財罪</span></div>
+              </div>
+            </div>
+            <div class="toc-l1"><span class="toc-l1-num">陸</span><span class="toc-l1-text">「『違法行為』之不作為」惡害（→ 三罪均不成立）</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">柒</span><span class="toc-l1-text">結論（附整理表）</span></div>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <div class="doi-text">出處：<span class="doi-val">台灣法律人 No.25 ／ 2023.7</span></div>
+          <div class="doi-text" style="margin-left:18px">收錄：<span class="doi-val">刑法各論之傳統與現代</span></div>
+          <a class="read-btn" href="https://drive.google.com/drive/search?q=%E6%83%A1%E5%AE%B3%E9%80%9A%E7%9F%A5%20%E8%A8%B1%E6%81%92%E9%81%94" target="_blank" onclick="event.stopPropagation()">📄 查看原文</a>
+        </div>
+      </div>
+    </div>
+    <!-- /HSU CARD 1 -->
+
+    <div class="ornament">✦ · · · ✦</div>
+    <div style="text-align:center;font-size:.7rem;color:var(--gray);letter-spacing:.18em;margin-bottom:16px">持續收錄中</div>
+  </div>
+</div>
+<!-- END AUTHOR: hsu -->
+
+<!-- BEGIN AUTHOR: hsu2 -->
+<div class="main author-panel" id="panel-hsu2" style="display:none">
+  <div class="prof-bar">
+    <div class="prof-portrait">
+      <img src="https://www.law.ntpu.edu.tw/zh/upload/faculty/1584605742.jpg" alt="徐育安教授"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <span class="prof-portrait-initial" style="display:none">徐</span>
+    </div>
+    <div class="prof-identity">
+      <div class="prof-name-zh">徐育安</div>
+      <div class="prof-name-en">Yu-An Hsu</div>
+    </div>
+    <div class="prof-meta">
+      <div class="prof-info-row"><span class="prof-info-label">職稱</span><span class="prof-info-value">教授</span></div>
+      <div class="prof-info-row"><span class="prof-info-label">單位</span><span class="prof-info-value">臺北大學法律學系</span></div>
+      <div class="prof-info-row"><span class="prof-info-label">領域</span><span class="prof-info-value">刑法各論、財產犯罪、公務員犯罪</span></div>
+    </div>
+    <div class="prof-tags">
+      <div class="prof-tags-label">關鍵詞篩選</div>
+      <div class="tag-list"><span class="tag active" onclick="filterTagHsu2(this,'all')">全部</span>
+        <span class="tag" onclick="filterTagHsu2(this,'貪污')">貪污</span>
+        <span class="tag" onclick="filterTagHsu2(this,'職務')">職務</span>
+        <span class="tag" onclick="filterTagHsu2(this,'登載不實')">登載不實</span></div>
+    </div>
+    <div class="prof-count">
+      <div class="prof-count-num">2</div>
+      <div class="prof-count-label">篇　論　文</div>
+    </div>
+  </div>
+
+  <div class="cards-area">    <div class="section-header">
+      <div class="section-title">論文列表</div>
+      
+    
+    </div>
+
+    <!-- HSU2 CARD 1 -->
+    <div class="article-card" id="hsu2-card-1" data-tags="貪污 職務 詐取財物" onclick="toggleCard('hsu2-card-1',event)" style="animation-delay:.05s">
+      <div class="card-header">
+        <div>
+          <div class="card-meta">
+            <span class="card-journal">法務通訊</span>
+            <span class="card-dot">·</span>
+            <span class="card-year">No.2993 ／ 2020.2</span>
+          </div>
+          <div class="card-title-zh">利用職務機會詐取財物罪之解釋與適用</div>
+          <div class="card-title-en">Interpretation of Fraud by Abuse of Official Duty</div>
+          <div class="card-keywords">
+            <span class="keyword">貪污治罪條例</span><span class="keyword">利用職務上機會</span>
+            <span class="keyword">詐取財物</span><span class="keyword">職務衍生機會</span><span class="keyword">議員助理費</span>
+          </div>
+        </div>
+        <div class="card-toggle">＋</div>
+      </div>
+
+      <div class="card-body" id="body-hsu2-card-1">
+        <div class="body-tabs" onclick="event.stopPropagation()">
+          <div class="body-tab active" onclick="switchTab('hsu2-card-1','abstract')">摘要</div>
+          <div class="body-tab" onclick="switchTab('hsu2-card-1','issues')">爭點整理</div>
+          <div class="body-tab" onclick="switchTab('hsu2-card-1','toc')">目次</div>
+        </div>
+
+        <!-- 摘要 -->
+        <div class="tab-panel active" id="hsu2-card-1-abstract" onclick="event.stopPropagation()">
+          <div class="abstract-text">
+            本文以<strong>貪污治罪條例第5條第1項第2款</strong>「利用職務上的機會，以詐術使人交付財物」為中心，探討「利用職務上機會」的解釋問題，並以<em>議員虛報助理補助費</em>為主要案例。<br><br>
+            實務對「職務上機會」的解釋相當寬鬆，甚至將「衍生機會」擴張至已脫離行為人固有職務範圍的情形，致生適用過度擴張之疑慮。<br><br>
+            <strong>作者核心主張</strong>：本罪應回歸<em>職務上的濫用</em>來判斷，議員助理費虛報屬對國家因身分所給予補助之內部申請，既非法定職務行為亦無對外效力，應論以普通詐欺、偽造文書或使公務員登載不實等罪，而非貪污治罪條例第5條。
+          </div>
+        </div>
+
+        <!-- 爭點整理 -->
+        <div class="tab-panel" id="hsu2-card-1-issues" onclick="event.stopPropagation()">
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點一</span>
+              <span class="issue-title">「利用職務上機會」是否包含「職務衍生機會」？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">實務寬鬆說（主流）</span>
+                <div class="doctrine-who">最高法院105年台上3126</div>
+              </div>
+              <div class="doctrine-content">
+                「職務上機會」係指假借職務上一切機會予以利用者，並不限於職務本身固有之機會，即使由職務上所<strong>衍生之機會</strong>，亦包括在內，不以職務上有決定權者為限。
+                <div class="doctrine-sub">
+                  典型案例：<br>
+                  ✓ 勞工局科員利用職務獲悉個資偽造文書領退休金（與職務密切相關）<br>
+                  ✓ 外交部駐外館長浮報交際費（交際活動屬外交職務範圍）<br>
+                  △ 都發局廣告管理科員聲稱可喬違章問題（已脫離固有職務範圍，仍被認定為衍生機會）<br>
+                  △ 消保官謊稱可化解水土保持案件（同上）
+                </div>
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">實務限縮說（少數）</span>
+                <div class="doctrine-who">最高法院85年台上6304<br>90年台上7308<br>96年台上271</div>
+              </div>
+              <div class="doctrine-content">
+                行為人施用詐術時，<strong>必須是在利用其職務所帶來的時機</strong>，利用這樣的機會始足當之；若行為人施用詐欺的行為跟法令上職務無關，即非利用職務上的機會詐取財物。並強調第5條與第6條的適用範圍必須予以區別。
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（徐育安）</div>
+              <div class="conclusion-text">
+                應採<strong>限縮解釋</strong>，回歸<em>職務上的濫用</em>來判斷。理由：<br><br>
+                ①若不限縮，第5條與第6條第1項第5款（利用職權機會或身分圖利罪）之間的區分將喪失意義，造成體系混亂。<br>
+                ②德國刑法第340條（職務上傷害）區分「執行職務之期間」與「跟職務有關係」，均以職務上的濫權為核心，而非空泛的身分判斷。<br>
+                ③刑法第134條不純正瀆職罪的適用前提，同樣是公務員於執行職務行為時利用與公權力行為相關之機會犯罪，非單純以身分即可。<br><br>
+                → 僅利用公務員身份或因此產生的信賴關係，而未濫用職務上公權力，充其量為<strong>第6條第1項第5款</strong>的問題。
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點二</span>
+              <span class="issue-title">議員虛報助理費——成立貪污治罪條例第5條？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">否定說</span>
+                <div class="doctrine-who">最高法院103年台上4374</div>
+              </div>
+              <div class="doctrine-content">
+                議員聘用助理條件由議員全權決定，補助費匯入帳戶後被認為可自主處理，傾向<strong>否定</strong>成立本罪。
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">肯定說（現行主流）</span>
+                <div class="doctrine-who">最高法院94年台上3897<br>104年台上3732<br>106年台上2999</div>
+              </div>
+              <div class="doctrine-content">
+                依內政部函釋（內授中民字第1040014217號），助理補助費並非實質薪資，存在人事費不得流入業務費的核銷限制，議員以虛報方式領取，成立第5條第1項第2款。
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（徐育安）</div>
+              <div class="conclusion-text">
+                議員助理費補助款的報帳行為，係<em>對於國家因其身分所給予的補助所提出之內部申請</em>，<strong>既非法定職務行為，也無對外效力</strong>。要將其認為是議員職務之行使，難找到實質理由。<br><br>
+                因此，此種情形：<br>
+                ✗ 非貪污治罪條例第5條第1項第2款所謂「利用職務上的機會」<br>
+                ✗ 也不符合第6條第1項第5款違背對多數不特定人民就一般事項所作對外發生法律效果規定之要件<br>
+                ✓ 應為<strong>刑法上詐欺、偽造文書或使公務員登載不實等罪</strong>之問題
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 目次 -->
+        <div class="tab-panel" id="hsu2-card-1-toc" onclick="event.stopPropagation()">
+          <div style="max-width:100%">
+            <div class="toc-l1"><span class="toc-l1-num">壹</span><span class="toc-l1-text">問題提出</span></div>
+            <div class="toc-l1">
+              <span class="toc-l1-num">貳</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">利用職務詐取財物罪之實務適用</div>
+                <div class="toc-l2"><span class="toc-l2-num">一、</span><span>職務上機會詐取財物之基本定義</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">二、</span><span>適用上之歧異（與職務相關、職務衍生機會、限縮性見解）</span></div>
+              </div>
+            </div>
+            <div class="toc-l1"><span class="toc-l1-num">參</span><span class="toc-l1-text">議員虛報助理費用之矛盾適用（否定說 vs. 肯定說）</span></div>
+            <div class="toc-l1"><span class="toc-l1-text">肆</span><span class="toc-l1-text">問題分析與檢討（比較法：刑法134條、德國刑法340條）</span></div>
+          </div>
+        </div>
+
+        <div class="card-footer" onclick="event.stopPropagation()">
+          <div class="doi-text">出處：<span class="doi-val">法務通訊 No.2993 ／ 2020.2.27</span></div>
+          <div class="doi-text" style="margin-left:18px">原文：<span class="doi-val">台灣法學雜誌 第345期 2018.6</span></div>
+          <a class="read-btn" href="https://drive.google.com/drive/search?q=%E8%81%B7%E5%8B%99%E6%A9%9F%E6%9C%83%E8%A9%90%E5%8F%96" target="_blank" onclick="event.stopPropagation()">📄 查看原文</a>
+        </div>
+      </div>
+    </div>
+    <!-- /HSU2 CARD 1 -->
+
+    <!-- HSU2 CARD 2 -->
+    <div class="article-card" id="hsu2-card-2" data-tags="貪污 職務 登載不實 間接正犯" onclick="toggleCard('hsu2-card-2',event)" style="animation-delay:.10s">
+      <div class="card-header">
+        <div>
+          <div class="card-meta">
+            <span class="card-journal">台灣法律人</span>
+            <span class="card-dot">·</span>
+            <span class="card-year">No.38 ／ 2024.9</span>
+          </div>
+          <div class="card-title-zh">使公務員登載不實罪與間接正犯</div>
+          <div class="card-title-en">Indirect Perpetration and the Crime of Causing False Registration</div>
+          <div class="card-keywords">
+            <span class="keyword">使公務員登載不實</span><span class="keyword">形式審查</span>
+            <span class="keyword">實質審查</span><span class="keyword">間接正犯</span><span class="keyword">漏洞填補</span>
+          </div>
+        </div>
+        <div class="card-toggle">＋</div>
+      </div>
+
+      <div class="card-body" id="body-hsu2-card-2">
+        <div class="body-tabs" onclick="event.stopPropagation()">
+          <div class="body-tab active" onclick="switchTab('hsu2-card-2','abstract')">摘要</div>
+          <div class="body-tab" onclick="switchTab('hsu2-card-2','issues')">爭點整理</div>
+          <div class="body-tab" onclick="switchTab('hsu2-card-2','toc')">目次</div>
+        </div>
+
+        <!-- 摘要 -->
+        <div class="tab-panel active" id="hsu2-card-2-abstract" onclick="event.stopPropagation()">
+          <div class="abstract-text">
+            本文以「謊稱所有權狀滅失申請補發」為素材，評析我國實務以<strong>形式審查／實質審查</strong>之二分法判斷是否構成使公務員登載不實罪（刑法第214條）的做法。<br><br>
+            本案一審（北院）與二審（高院）採相同判斷標準，卻得出截然相反結論，充分暴露此一二分法在實踐上的根本困難。<br><br>
+            <strong>作者核心主張</strong>：本罪在學理上屬<em>間接正犯</em>（間接無形偽造），作為填補漏洞的獨立規範。應從「間接正犯結構」與「漏洞填補」兩個角度進行判斷，公務員是否具有審查義務並非成立本罪的準據。比較德國法（§271 StGB），德國採廣義認定，所有足以導致登載不實之行為均屬之，不以有無審查義務為判斷標準。
+          </div>
+        </div>
+
+        <!-- 爭點整理 -->
+        <div class="tab-panel" id="hsu2-card-2-issues" onclick="event.stopPropagation()">
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點一</span>
+              <span class="issue-title">以形式／實質審查二分法判斷本罪——是否妥適？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">實務通說</span>
+                <div class="doctrine-who">最高法院73年台上1710<br>77年台上1678<br>91年第17次決議</div>
+              </div>
+              <div class="doctrine-content">
+                公務員為<strong>形式審查</strong>（一經申請即有登載義務）→ 申請內容不實 → 構成本罪。<br>
+                公務員為<strong>實質審查</strong>（尚須判斷真實與否始為登載）→ 不構成本罪。
+                <div class="doctrine-sub">典型案例：戶籍遷徙登記（認為屬實質審查，不成立；但實務上查驗也僅是形式文件核對，兩者難以區分）</div>
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者批評（徐育安）</div>
+              <div class="conclusion-text">
+                <strong>四大缺陷</strong>：<br>
+                ①行政審查流程非單一，可能多個階段兼有形式與實質審查成分，強行歸類困難<br>
+                ②形式與實質審查之區分本身缺乏清晰標準——戶籍遷徙查驗也只是形式文件核查，與純形式審查難以區別<br>
+                ③行政業務逐漸走向網路化、自動化，若僅有網路認證而無人工審查，此一二分法將失其附麗<br>
+                ④<strong>最根本的問題</strong>：公務員負有實質審查義務時，仍可能因受欺騙而做出不正確紀錄，卻因被歸類為「實質審查」而排除本罪成立，與間接正犯的犯罪結構有所齟齬
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點二</span>
+              <span class="issue-title">謊稱所有權狀滅失申請補發——成立本罪？（實務歧見）</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-crit">否定說</span>
+                <div class="doctrine-who">臺高院暨所屬法院<br>103年法律座談會<br>刑事類第5號</div>
+              </div>
+              <div class="doctrine-content">
+                補發程序須說明滅失原因、提切結書、經公告30日無人異議始補發，並非一經申請即予補發，故屬<strong>實質審查</strong>，不成立本罪。
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">附條件肯定說</span>
+                <div class="doctrine-who">最高法院102年台非169<br>103年台非182<br>109年台上2522</div>
+              </div>
+              <div class="doctrine-content">
+                公告程序完成、無人異議後登記補給，此部分僅為形式流程，<strong>成立本罪</strong>。但若公告期間有合法異議而駁回申請，因未為不實登載，不成立。
+                <div class="doctrine-sub">✗ 批評：前後說明相互矛盾——一方面認為並非形式審查，另一方面又以公告程序為形式流程肯定成罪；審查義務有無似乎取決於「是否有人提出異議」此一偶然事件。</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點三</span>
+              <span class="issue-title">應從間接正犯結構重新定位本罪</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">德國法（§271 StGB）</span>
+                <div class="doctrine-who">德國通說</div>
+              </div>
+              <div class="doctrine-content">
+                構成要件行為「bewirken」（造成、導致），不以公務員有無審查義務為準。涵蓋兩大類型：<br>
+                ①<strong>間接正犯類型</strong>：欺罔、恐嚇、利用喪失罪責能力者<br>
+                ②<strong>實際影響類型（錯誤類型）</strong>：行為人誤認公務員不知情但公務員實際知情仍登載；或行為人誤認知情但公務員實際不知情而登載
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（徐育安）</div>
+              <div class="conclusion-text">
+                應從<strong>間接正犯</strong>與<strong>漏洞填補</strong>兩個角度進行判斷，公務員是否具有審查義務並非重點。<br><br>
+                <strong>本案正確分析</strong>：行為人提出不實原因（謊稱滅失），使公務員在欠缺法定要件的情形下，<em>錯誤地認定</em>法定要件所要求之事實存在，因而進入法定公告程序並取得補發權狀 → 屬本罪<strong>既遂</strong>。<br><br>
+                若公告期間有他人提出異議而未完成補給登記 → 屬<strong>未遂</strong>（刑法第214條無未遂犯處罰規定，故不罰）——但並非因屬「實質審查」而不構成本罪。
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- 目次 -->
+        <div class="tab-panel" id="hsu2-card-2-toc" onclick="event.stopPropagation()">
+          <div style="max-width:100%">
+            <div class="toc-l1"><span class="toc-l1-num">壹</span><span class="toc-l1-text">案件事實與問題提出</span></div>
+            <div class="toc-l1">
+              <span class="toc-l1-num">貳</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">本案歷審判決理由</div>
+                <div class="toc-l2"><span class="toc-l2-num">一、</span><span>一審無罪：補發程序二階段區分 + 登載事項內容分析</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">二、</span><span>二審有罪：形式審查認定 + 不實切結書編列為附件</span></div>
+              </div>
+            </div>
+            <div class="toc-l1">
+              <span class="toc-l1-num">參</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">使公務員登載不實之實務見解</div>
+                <div class="toc-l2"><span class="toc-l2-num">一、</span><span>形式審查與實質審查（73年台上1710 → 91年決議）</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">二、</span><span>謊稱所有權狀滅失（否定說 vs. 附條件肯定說）</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">三、</span><span>實務見解分析（四大缺陷）</span></div>
+              </div>
+            </div>
+            <div class="toc-l1">
+              <span class="toc-l1-num">肆</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">使公務員登載不實罪之間接正犯結構</div>
+                <div class="toc-l2"><span class="toc-l2-num">一、</span><span>我國學說見解</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">二、</span><span>德國刑法之比較（§271 StGB）</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">三、</span><span>本文見解（間接正犯 + 漏洞填補）</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer" onclick="event.stopPropagation()">
+          <div class="doi-text">出處：<span class="doi-val">台灣法律人 No.38 ／ 2024.9</span></div>
+          <div class="doi-text" style="margin-left:18px">性質：<span class="doi-val">裁判評釋</span></div>
+          <a class="read-btn" href="https://drive.google.com/drive/search?q=%E4%BD%BF%E5%85%AC%E5%8B%99%E5%93%A1%E7%99%BB%E8%BC%89%E4%B8%8D%E5%AF%A6" target="_blank" onclick="event.stopPropagation()">📄 查看原文</a>
+        </div>
+      </div>
+    </div>
+    <!-- /HSU2 CARD 2 -->
+
+
+    <div class="ornament">✦ · · · ✦</div>
+    <div style="text-align:center;font-size:.7rem;color:var(--gray);letter-spacing:.18em;margin-bottom:16px">持續收錄中</div>
+  </div>
+</div>
+<!-- END AUTHOR: hsu2 -->
+<!-- AUTHOR: wang -->
+<div class="main author-panel" id="panel-wang" style="display:none">
+  <div class="prof-bar">
+    <div class="prof-portrait">
+      <img src="https://www.law.ntu.edu.tw/media/k2/items/cache/b38c8e4d1c40a2a0b1e4c3d2e5f6a7b8_M.jpg" alt="王皇玉教授"
+           onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/>
+      <span class="prof-portrait-initial" style="display:none">王</span>
+    </div>
+    <div class="prof-identity">
+      <div class="prof-name-zh">王皇玉</div>
+      <div class="prof-name-en">Huang-Yu Wang</div>
+    </div>
+    <div class="prof-meta">
+      <div class="prof-info-row"><span class="prof-info-label">職稱</span><span class="prof-info-value">特聘教授／院長</span></div>
+      <div class="prof-info-row"><span class="prof-info-label">單位</span><span class="prof-info-value">臺灣大學法律學院</span></div>
+      <div class="prof-info-row"><span class="prof-info-label">領域</span><span class="prof-info-value">刑法、醫事法、犯罪學、兒童與婦女保護</span></div>
+    </div>
+    <div class="prof-tags">
+      <div class="prof-tags-label">關鍵詞篩選</div>
+      <div class="tag-list"><span class="tag active" onclick="filterTagWang(this,'all')">全部</span>
+        <span class="tag" onclick="filterTagWang(this,'性影像')">性影像</span>
+        <span class="tag" onclick="filterTagWang(this,'交通')">交通逃逸</span>
+        <span class="tag" onclick="filterTagWang(this,'嬰兒')">嬰兒保護</span></div>
+    </div>
+    <div class="prof-count">
+      <div class="prof-count-num">3</div>
+      <div class="prof-count-label">篇　論　文</div>
+    </div>
+  </div>
+
+  <div class="cards-area">    <div class="section-header">
+      <div class="section-title">論文列表</div>
+      
+    
+    </div>
+
+
+    <!-- WANG CARD 1 -->
+    <div class="article-card" id="wang-card-1" data-tags="性影像 性隱私 深偽 數位性別暴力" onclick="toggleCard('wang-card-1',event)" style="animation-delay:.05s">
+      <div class="card-header">
+        <div>
+          <div class="card-meta">
+            <span class="card-journal">月旦法學雜誌</span>
+            <span class="card-dot">·</span>
+            <span class="card-year">第357期 ／ 2025.2</span>
+          </div>
+          <div class="card-title-zh">性隱私與不實性影像之刑法規制</div>
+          <div class="card-title-en">Criminal Regulation of Sexual Privacy and Non-Consensual Intimate Images</div>
+          <div class="card-keywords">
+            <span class="keyword">性影像</span><span class="keyword">性隱私</span>
+            <span class="keyword">深度虛偽</span><span class="keyword">復仇性色情</span>
+            <span class="keyword">§319-1~§319-4</span><span class="keyword">資訊自決</span>
+          </div>
+        </div>
+        <div class="card-toggle">＋</div>
+      </div>
+
+      <div class="card-body" id="body-wang-card-1">
+        <div class="body-tabs" onclick="event.stopPropagation()">
+          <div class="body-tab active" onclick="switchTab('wang-card-1','abstract')">摘要</div>
+          <div class="body-tab" onclick="switchTab('wang-card-1','issues')">爭點整理</div>
+          <div class="body-tab" onclick="switchTab('wang-card-1','toc')">目次</div>
+        </div>
+
+        <div class="tab-panel active" id="wang-card-1-abstract" onclick="event.stopPropagation()">
+          <div class="abstract-text">
+            近年數位性別暴力盛行，包括成人性私密影像散布及深度虛偽（deep fake）技術製作之不實性影像。112年1月7日立法院三讀通過刑法修正，於第10條第8項增訂「性影像」定義，並增訂第28章之1<strong>「妨害性隱私及不實性影像罪章」</strong>，涵蓋四種犯罪態樣（§319-1 至 §319-4）。<br><br>
+            本文逐一解析修法內容、構成要件、競合問題與加重處罰規定，並以案例輔助說明。
+          </div>
+        </div>
+
+        <div class="tab-panel" id="wang-card-1-issues" onclick="event.stopPropagation()">
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點一</span>
+              <span class="issue-title">§319-1至§319-3的保護法益為何？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">通說</span>
+                <div class="doctrine-who">林琬珊、古承宗</div>
+              </div>
+              <div class="doctrine-content">
+                保護法益為「<strong>性隱私</strong>」，屬一般人格權之下位概念「資訊自決」權。個人對自己性相關影像享有不被無故攝錄、散布或供人觀覽之權利。
+                <div class="doctrine-sub">→ 保護客體限於「真實事件」之影像，不包含虛偽、杜撰之影像。</div>
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">比較法</span>
+                <div class="doctrine-who">德國§201a StGB</div>
+              </div>
+              <div class="doctrine-content">
+                德國刑法第201a條保護者為「<strong>一般人格權</strong>」，範圍更廣，不以「性影像」為限，亦包含住宅或遮蔽空間、極高度個人生活領域之影像。
+                <div class="doctrine-sub">→ 相較之下，我國本罪章強調「性隱私」與「性影像」，保護範圍較窄。</div>
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（王皇玉）</div>
+              <div class="conclusion-text">
+                §319-1至§319-3應從一般人格權保護角度理解，個人對自己與性有關之影像，享有不被他人無故攝錄、散布或供人觀覽之權利。「隱私」概念要求保護客體限於<strong>真實事件</strong>之影像。
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點二</span>
+              <span class="issue-title">§319-4深偽條款之保護法益為何？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">名譽權說</span>
+                <div class="doctrine-who">陳俊偉、林琬珊<br>（學說多數）</div>
+              </div>
+              <div class="doctrine-content">
+                深偽條款保護之法益應為「<strong>名譽</strong>」。深度虛偽性影像並非建立在真實事件之上，散布此等影像造成個人社會評價貶損。本罪理應劃歸妨害名譽罪章。
+                <div class="doctrine-sub">批評：本罪之規範功能可藉由妨害名譽罪取代。（古承宗）</div>
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">形象法益說</span>
+                <div class="doctrine-who">許恒達</div>
+              </div>
+              <div class="doctrine-content">
+                本罪保護一般人格權延伸的「<strong>形象法益</strong>」，關於「公眾對於個人私密生活的消極不知情」。行為人藉由散布不實性影像，傳述錯誤的被害人私領域生活歷程。
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">性形象說</span>
+                <div class="doctrine-who">謝煜偉（少數）</div>
+              </div>
+              <div class="doctrine-content">
+                一般人的性形象通常是「留白」、「未知」之狀態，本罪保護一個人不受侵擾、應留白的性形象。「不實性影像」不必然等於妨害名譽，有可能是正面宣揚性活動的名聲。
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（王皇玉）</div>
+              <div class="conclusion-text">
+                本罪乃針對個人與「性」有關之<strong>名譽權</strong>的特別保護。立法者認為以現有妨害名譽罪刑罰過輕，故特別制訂加重處罰規定。本文基本贊同，本罪與妨害名譽罪應屬<strong>法條競合中的特別關係</strong>。
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點三</span>
+              <span class="issue-title">§319-1「無故」攝錄之認定</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">實務見解</span>
+                <div class="doctrine-who">最高法院<br>98年台上5053</div>
+              </div>
+              <div class="doctrine-content">
+                「無故」係指無正當理由，應依日常生活經驗法則由客觀事實判斷。立法者將「無故」置入構成要件，主要係在評價構成要件之階段即進行違法性之判斷。
+                <div class="doctrine-sub">「有故」之例：①蒐證性侵過程報案（緊急避難）②記者為維護公共利益採訪政治人物（新聞自由）→ 惟仍須通過法益權衡。</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點四</span>
+              <span class="issue-title">§319-1與§315-1竊錄罪之競合關係</span>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（王皇玉）</div>
+              <div class="conclusion-text">
+                二者保護法益性質相同，一行為同時成立時屬<strong>法條競合（吸收）</strong>關係——具高度不法內涵之§319-1吸收低度之§315-1，僅論以§319-1。<br>
+                惟§319-1構成要件中無「非公開」之要求，故即便公開場所之性行為亦可成立§319-1，但不成立§315-1。
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點五</span>
+              <span class="issue-title">§319-4「不實性影像」之範圍——深偽 v. 淺偽之區別</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">限深偽說</span>
+                <div class="doctrine-who">謝煜偉</div>
+              </div>
+              <div class="doctrine-content">
+                本罪主要規範「深度虛偽」（deep fake）製作之不實性影像，應排除「廉價造假」（cheap fake）或「淺層虛偽」（shallow fake）——不致使人誤信或不具高度擬真性之不實性影像（如動漫呈現）。
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">案例</span>
+                <div class="doctrine-who">約砲驚魂案</div>
+              </div>
+              <div class="doctrine-content">
+                乙女利用電腦合成技術強化甲男頭部影像使人清楚辨識，但原本仍屬「真實事件」影片 → 屬「重製」真實性影像（§319-3第2項），<strong>非</strong>製作「不實性影像」。<br>
+                反之，另以電腦合成將甲之頭像架接到不知名裸男身上 → 始構成§319-4之製作「不實性影像」。
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（王皇玉）</div>
+              <div class="conclusion-text">
+                本罪屬「<strong>適性犯</strong>」，製作之不實性影像須「足以生損害於他人」始成立。廉價偽造不足以以假亂真、不具高度擬真性，或製作後刪除自行觀賞而未對外散布者，均不構成本罪。本罪僅處罰<strong>既遂犯</strong>，不處罰未遂犯。
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="tab-panel" id="wang-card-1-toc" onclick="event.stopPropagation()">
+          <div style="max-width:100%">
+            <div class="toc-l1"><span class="toc-l1-num">壹</span><span class="toc-l1-text">基本概念（立法緣由、保護法益）</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">貳</span><span class="toc-l1-text">未經同意無故攝錄他人性影像罪（§319-1）</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">參</span><span class="toc-l1-text">以強制手段攝錄他人性影像罪（§319-2）</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">肆</span><span class="toc-l1-text">無故重製、散布、播送、交付、公然陳列他人性影像（§319-3）</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">伍</span><span class="toc-l1-text">意圖散布以電腦合成製作他人不實性影像罪（§319-4）</span></div>
+          </div>
+        </div>
+
+        <div class="card-footer" onclick="event.stopPropagation()">
+          <div class="doi-text">出處：<span class="doi-val">月旦法學雜誌 第357期 ／ 2025.2，第125-138頁</span></div>
+          <a class="read-btn" href="https://drive.google.com/drive/search?q=%E6%80%A7%E9%9A%B1%E7%A7%81%E8%88%87%E4%B8%8D%E5%AF%A6%E6%80%A7%E5%BD%B1%E5%83%8F%E7%8E%8B%E7%9A%87%E7%8E%89" target="_blank" onclick="event.stopPropagation()">📄 查看原文</a>
+        </div>
+      </div>
+    </div>
+    <!-- /WANG CARD 1 -->
+
+    <!-- WANG CARD 2 -->
+    <div class="article-card" id="wang-card-2" data-tags="交通 逃逸 §185-4" onclick="toggleCard('wang-card-2',event)" style="animation-delay:.10s">
+      <div class="card-header">
+        <div>
+          <div class="card-meta">
+            <span class="card-journal">月旦法學教室</span>
+            <span class="card-dot">·</span>
+            <span class="card-year">第225期 ／ 2021.7</span>
+          </div>
+          <div class="card-title-zh">自認無過失案</div>
+          <div class="card-title-en">The Case of Self-Assessed Faultlessness in Traffic Accidents</div>
+          <div class="card-keywords">
+            <span class="keyword">發生交通事故</span><span class="keyword">無過失</span>
+            <span class="keyword">逃逸</span><span class="keyword">§185-4</span>
+            <span class="keyword">釋字第777號</span><span class="keyword">在場義務</span>
+          </div>
+        </div>
+        <div class="card-toggle">＋</div>
+      </div>
+
+      <div class="card-body" id="body-wang-card-2">
+        <div class="body-tabs" onclick="event.stopPropagation()">
+          <div class="body-tab active" onclick="switchTab('wang-card-2','abstract')">摘要</div>
+          <div class="body-tab" onclick="switchTab('wang-card-2','issues')">爭點整理</div>
+          <div class="body-tab" onclick="switchTab('wang-card-2','toc')">目次</div>
+        </div>
+
+        <div class="tab-panel active" id="wang-card-2-abstract" onclick="event.stopPropagation()">
+          <div class="abstract-text">
+            <strong>案例事實</strong>：甲停等紅燈時遭乙機車從後追撞，乙因此受傷流血。甲自後照鏡察看，自認撞擊不嚴重且係乙過失，遂開車離開現場。<br><br>
+            本文透過本案探討：(1) 釋字第777號宣告舊法違憲後，2021年修法後的§185-4適用；(2) 無過失者是否仍有留場義務；(3) 本罪之保護法益；(4) 「逃逸」之認定範圍。
+          </div>
+        </div>
+
+        <div class="tab-panel" id="wang-card-2-issues" onclick="event.stopPropagation()">
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點一</span>
+              <span class="issue-title">自認無過失離去現場，是否仍成立§185-4逃逸罪？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-crit">舊法問題</span>
+                <div class="doctrine-who">釋字第777號<br>（2019年）</div>
+              </div>
+              <div class="doctrine-content">
+                舊法「肇事」一語包含無過失情形，但此並非一般人所得理解或預見，<strong>違反法律明確性原則</strong>。一律以1年以上7年以下有期徒刑為法定刑，不符罪刑相當原則，<strong>違反比例原則</strong>。
+                <div class="doctrine-sub">→ 司法院宣告違憲，督促立法院於2年內修正。</div>
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">修法後（2021）</span>
+                <div class="doctrine-who">立法理由</div>
+              </div>
+              <div class="doctrine-content">
+                行為人對交通事故之發生有無過失，並不重要，均負有<strong>留在現場之義務</strong>。有無過失之認定，通常須經車禍事故鑑定或由法院最終判斷，不應放任事故參與者自行判斷。修正後第2項規定：無過失者<strong>減輕或免除其刑</strong>（非不成罪）。
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（王皇玉）</div>
+              <div class="conclusion-text">
+                甲雖自認無過失，惟其既為事故參與者之一方，根據修正規定，仍有留在現場、表明身分之義務。況有無過失之認定應由法院為之，故<strong>甲之行為仍成立本罪第1項前段</strong>。惟若法院認定甲確無過失，則依第2項規定，應減輕或免除其刑。
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點二</span>
+              <span class="issue-title">本罪之保護法益為何？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">生命身體安全說</span>
+                <div class="doctrine-who"></div>
+              </div>
+              <div class="doctrine-content">要求行為人留在現場以利及時救護，以減少被害人死傷。</div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">交通往來安全說</span>
+                <div class="doctrine-who"></div>
+              </div>
+              <div class="doctrine-content">維護往來交通安全秩序，要求肇事者不得擅自逃逸，以維持交通事故處理之秩序。</div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">事故責任釐清說</span>
+                <div class="doctrine-who">102年台上1737<br>109年台上4885</div>
+              </div>
+              <div class="doctrine-content">保護釐清事故責任之利益，創設事故參與者應留下資料以供查明肇事責任之「在場義務」。</div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">兼採說（修法後）</span>
+                <div class="doctrine-who">2021年修正<br>立法理由</div>
+              </div>
+              <div class="doctrine-content">修正後立法理由<strong>明確將本罪之法益設定為綜合三說</strong>：及時救護傷者、維護公共交通安全、釐清交通事故責任三者兼顧。</div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點三</span>
+              <span class="issue-title">「逃逸」之認定——留場但不救助是否成罪？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">實務見解</span>
+                <div class="doctrine-who">107年台上378</div>
+              </div>
+              <div class="doctrine-content">「逃逸」係指行為人主觀上對其肇事致人死傷已有認識，客觀上並有<strong>擅自離開肇事現場</strong>之行為。</div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（王皇玉）</div>
+              <div class="conclusion-text">
+                基於罪刑法定原則，不應擴大「逃逸」之文義範圍——<strong>留在現場但未積極救助，不成立本罪</strong>（但有可能成立第294條有義務遺棄罪）。<br>
+                本罪修法後仍為<strong>故意犯</strong>，行為人對發生交通事故一事，主觀上必須有直接故意或未必故意，且對致人傷害、重傷或死亡必須有所認識或預見，在此認識或預見下離開現場，始成立本罪。
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="tab-panel" id="wang-card-2-toc" onclick="event.stopPropagation()">
+          <div style="max-width:100%">
+            <div class="toc-l1"><span class="toc-l1-num">壹</span><span class="toc-l1-text">爭點</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">貳</span><span class="toc-l1-text">刑法第185條之4基本概念（立法沿革、釋字第777號、2021年修法）</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">參</span><span class="toc-l1-text">本罪之保護法益（三說）</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">肆</span><span class="toc-l1-text">本罪構成要件之解釋（逃逸之認定）</span></div>
+            <div class="toc-l1"><span class="toc-l1-num">伍</span><span class="toc-l1-text">結語（本案論處）</span></div>
+          </div>
+        </div>
+
+        <div class="card-footer" onclick="event.stopPropagation()">
+          <div class="doi-text">出處：<span class="doi-val">月旦法學教室 第225期 ／ 2021.7，第13-15頁</span></div>
+          <a class="read-btn" href="https://drive.google.com/drive/search?q=%E8%87%AA%E8%AA%8D%E7%84%A1%E9%81%8E%E5%A4%B1%E6%A1%88%E7%8E%8B%E7%9A%87%E7%8E%89" target="_blank" onclick="event.stopPropagation()">📄 查看原文</a>
+        </div>
+      </div>
+    </div>
+    <!-- /WANG CARD 2 -->
+
+    <!-- WANG CARD 3 -->
+    <div class="article-card" id="wang-card-3" data-tags="嬰兒 生育 棄嬰 比較法" onclick="toggleCard('wang-card-3',event)" style="animation-delay:.15s">
+      <div class="card-header">
+        <div>
+          <div class="card-meta">
+            <span class="card-journal">月旦醫事法報告</span>
+            <span class="card-dot">·</span>
+            <span class="card-year">第108期 ／ 2025.10</span>
+          </div>
+          <div class="card-title-zh">胎兒生命權與婦女生育自主權之衝突及調和——以「嬰兒保護艙」制度為中心</div>
+          <div class="card-title-en">Conflicts Between Fetal Right to Life and Women's Reproductive Autonomy: A Study on Baby Safe Haven Systems</div>
+          <div class="card-keywords">
+            <span class="keyword">安全港法</span><span class="keyword">秘密生產</span>
+            <span class="keyword">棄嬰</span><span class="keyword">嬰兒保護艙</span>
+            <span class="keyword">嬰兒信箱</span><span class="keyword">比較法</span>
+          </div>
+        </div>
+        <div class="card-toggle">＋</div>
+      </div>
+
+      <div class="card-body" id="body-wang-card-3">
+        <div class="body-tabs" onclick="event.stopPropagation()">
+          <div class="body-tab active" onclick="switchTab('wang-card-3','abstract')">摘要</div>
+          <div class="body-tab" onclick="switchTab('wang-card-3','issues')">爭點整理</div>
+          <div class="body-tab" onclick="switchTab('wang-card-3','toc')">目次</div>
+        </div>
+
+        <div class="tab-panel active" id="wang-card-3-abstract" onclick="event.stopPropagation()">
+          <div class="abstract-text">
+            在我國，遺棄嬰兒與殺死嬰兒的悲劇一再發生，此等事件往往被視為當事人個人問題，而非政策面問題。本文探討其他國家對嬰兒保護之法律，包括德國秘密生產制度、日本嬰兒信箱制度，與美國避風港法制，以提供我國未來建構「新生兒保護」法理基礎。<br><br>
+            核心問題：遺棄嬰兒悲劇背後是「制度的失敗」，而非單純個人道德問題。
+          </div>
+        </div>
+
+        <div class="tab-panel" id="wang-card-3-issues" onclick="event.stopPropagation()">
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點一</span>
+              <span class="issue-title">遺棄嬰兒行為究竟是個人問題還是制度問題？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-crit">傳統觀點</span>
+                <div class="doctrine-who">個人問題說</div>
+              </div>
+              <div class="doctrine-content">
+                將「遺棄嬰兒」、「生而不養」行為歸咎於生母之個人問題，以殺嬰、遺棄罪追究刑責，透過嚴厲刑罰遏止此等行為。
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（王皇玉）——制度殺人說</div>
+              <div class="conclusion-text">
+                一味譴責生而不養的生母，實則反應出<strong>國家對懷孕婦女與嬰兒保護制度之不足</strong>。這些遺棄新生兒的女性幾乎都有一個共同特徵——「<strong>孤立生產</strong>」，身邊沒有醫護人員陪同，母嬰均可能陷於緊急危難。<br>
+                不管世界哪個國家，過去法律制度常將「遺棄嬰兒」歸咎於生母個人問題，殊不知一味譴責，實則反應出國家對懷孕婦女與嬰兒保護制度之不足。
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點二</span>
+              <span class="issue-title">三種「嬰兒保護艙」模式之比較與優劣</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">模式一</span>
+                <div class="doctrine-who">日本「嬰兒信箱」<br>（熊本慈惠醫院）<br>私人機構主導</div>
+              </div>
+              <div class="doctrine-content">
+                採完全匿名制，孕婦無須告知身分即可在醫院生產。2007-2017年間共收容130個小孩。<br>
+                <strong>優：</strong>直接拯救棄嬰生命，提供孤立生產婦女出路。<br>
+                <strong>缺：</strong>未納入政府正式體制；採匿名制與「兒童得知其父母權利」之兒童保護公約精神不符。
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">模式二</span>
+                <div class="doctrine-who">德國「秘密生產」<br>（懷孕衝突法 1992<br>+擴大協助孕婦法 2014）</div>
+              </div>
+              <div class="doctrine-content">
+                法律允許婦女以化名方式秘密生產，不追究刑責，亦不通報非法居留、被通緝、吸毒或未成年人。<strong>真實身分暫時保密，留待小孩16歲時揭露</strong>（兒童有權知情身世）。<br>
+                <strong>優：</strong>以國家介入方式建立法律確定性；調和母親隱私與子女知情權；創造遺棄罪之阻卻違法事由。
+              </div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-alt">模式三</span>
+                <div class="doctrine-who">美國「安全港法」<br>（Safe Haven Law）<br>各州立法</div>
+              </div>
+              <div class="doctrine-content">
+                1999年德州率先建立，後各州跟進。允許新生兒父母在指定安全地點合法放棄嬰兒而不受起訴。標語：「No Shame, No Blame, No Names」。遺棄者須提供嬰兒醫療基本資訊，安全港人員對遺棄者個人資訊負保密義務。
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（王皇玉）</div>
+              <div class="conclusion-text">
+                任何一名嬰兒來到世上，不管出身背景，都應平等地接受國家社會福利的照顧。期待我國也能建構「<strong>合法遺棄新生兒</strong>」的制度，使懷孕婦女不再孤立無援。
+              </div>
+            </div>
+          </div>
+
+          <div class="issue-block">
+            <div class="issue-header">
+              <span class="issue-num">爭點三</span>
+              <span class="issue-title">「知情身世權」v.「母親秘密生產權」——如何調和？</span>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-crit">日本立場</span>
+                <div class="doctrine-who">傾向母親匿名<br>熊本慈惠醫院</div>
+              </div>
+              <div class="doctrine-content">採完全匿名制，母親無須透露身分。此作法被批評與「兒童得知其父母權利」之兒童保護公約精神不符，缺乏法律對兒童知情權的正式保障。</div>
+            </div>
+            <div class="doctrine-item">
+              <div class="doctrine-label">
+                <span class="doctrine-badge badge-main">德國立場</span>
+                <div class="doctrine-who">調和兩者<br>懷孕衝突法§31</div>
+              </div>
+              <div class="doctrine-content">
+                一個人知道自己的出身、血緣等身世，乃其生而為人至為重要的<strong>基本權利</strong>，亦為德國基本法所保護。以秘密生產方式誕生的小孩，在<strong>年滿16歲時，有權利請求得知或影印有關自己身世的文件</strong>。<br>
+                如果母親不想揭露，可在小孩年滿15歲時提出聲請，僅在母親擔憂揭露身世會有生命危險時，法院才會禁止揭露。
+              </div>
+            </div>
+            <div class="author-conclusion">
+              <div class="conclusion-label">▎ 作者見解（王皇玉）</div>
+              <div class="conclusion-text">
+                <strong>德國制度值得我國借鏡</strong>——在保護懷孕婦女秘密生產權的同時，透過「身世揭露」制度，使小孩在年滿16歲後得以知情身世，較能調和生母隱私與子女知情權之衝突，且具備法律確定性。
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="tab-panel" id="wang-card-3-toc" onclick="event.stopPropagation()">
+          <div style="max-width:100%">
+            <div class="toc-l1"><span class="toc-l1-num">壹</span><span class="toc-l1-text">制度殺人——何以「殺嬰」「棄嬰」悲劇一再上演？</span></div>
+            <div class="toc-l1">
+              <span class="toc-l1-num">貳</span>
+              <div style="flex:1;min-width:0">
+                <div class="toc-l1-text">「嬰兒保護艙」制度——以他國法制為例</div>
+                <div class="toc-l2"><span class="toc-l2-num">一、</span><span>日本「嬰兒信箱」制度（熊本慈惠醫院）</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">二、</span><span>德國「秘密生產」制度（懷孕衝突法、擴大協助孕婦法）</span></div>
+                <div class="toc-l2"><span class="toc-l2-num">三、</span><span>美國「安全港法」制度（Safe Haven Law）</span></div>
+              </div>
+            </div>
+            <div class="toc-l1"><span class="toc-l1-num">參</span><span class="toc-l1-text">結語——對我國立法之建議</span></div>
+          </div>
+        </div>
+
+        <div class="card-footer" onclick="event.stopPropagation()">
+          <div class="doi-text">出處：<span class="doi-val">月旦醫事法報告 第108期 ／ 2025.10，第7-15頁</span></div>
+          <a class="read-btn" href="https://drive.google.com/drive/search?q=%E5%AC%B0%E5%85%92%E4%BF%9D%E8%AD%B7%E8%89%99%E7%8E%8B%E7%9A%87%E7%8E%89" target="_blank" onclick="event.stopPropagation()">📄 查看原文</a>
+        </div>
+      </div>
+    </div>
+    <!-- /WANG CARD 3 -->
+
+
+    <div class="ornament">✦ · · · ✦</div>
+    <div style="text-align:center;font-size:.7rem;color:var(--gray);letter-spacing:.18em;margin-bottom:16px">持續收錄中</div>
+  </div>
+</div>
+<!-- END AUTHOR: wang -->
+
+
+
+<script>
+
+  function switchAuthor(key, el) {
+    document.querySelectorAll('.author-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('.author-panel').forEach(p => p.style.display = 'none');
+    document.getElementById('panel-' + key).style.display = 'grid';
+  }
+
+  function filterTagTsai(el, tag) {
+    document.querySelectorAll('#panel-tsai .tag').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    document.querySelectorAll('#panel-tsai .article-card').forEach(card => {
+      card.style.display = (tag === 'all' || (card.dataset.tags||'').includes(tag)) ? 'block' : 'none';
+    });
+  }
+
+  function toggleCard(id, e) {
+    const card = document.getElementById(id);
+    const body = document.getElementById('body-' + id);
+    const isOpen = card.classList.contains('expanded');
+    document.querySelectorAll('.article-card').forEach(c => c.classList.remove('expanded'));
+    document.querySelectorAll('.card-body').forEach(b => b.classList.remove('open'));
+    if (!isOpen) { card.classList.add('expanded'); body.classList.add('open'); }
+  }
+
+  function switchTab(cardId, tab) {
+    const body = document.getElementById('body-' + cardId);
+    body.querySelectorAll('.body-tab').forEach(t => t.classList.remove('active'));
+    body.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    // activate clicked tab button
+    const tabs = body.querySelectorAll('.body-tab');
+    const map = { abstract:0, issues:1, toc:2 };
+    tabs[map[tab]].classList.add('active');
+    document.getElementById(cardId + '-' + tab).classList.add('active');
+  }
+
+  function filterTag(el, tag) {
+    document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+    const cards = document.querySelectorAll('.article-card');
+    cards.forEach(card => {
+      card.style.display = (tag === 'all' || (card.dataset.tags||'').includes(tag)) ? 'block' : 'none';
+    });
+    document.getElementById('count-display').textContent = [...cards].filter(c => c.style.display !== 'none').length;
+  }
+</script>
+
+</body>
+</html>
